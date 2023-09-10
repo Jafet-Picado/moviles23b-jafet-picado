@@ -138,6 +138,28 @@ class Fraction {
   @override
   int get hashCode => numerator.hashCode ^ denominator.hashCode;
 
+  Fraction pow(int exponent) {
+    if (exponent == 0) {
+      return Fraction(1, 1);
+    }
+
+    if (exponent < 0) {
+      return Fraction(denominator, numerator).pow(-exponent);
+    }
+
+    Fraction result = this;
+    for (int index = 1; index < exponent; index++) {
+      result *= this;
+    }
+    return result;
+  }
+
+  bool get isProper => numerator! < denominator!;
+
+  bool get isImproper => numerator! >= denominator!;
+
+  bool get isWhole => numerator! % denominator! == 0;
+
   num toNum() {
     return numerator! / denominator!;
   }
