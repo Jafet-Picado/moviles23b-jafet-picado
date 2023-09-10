@@ -47,7 +47,7 @@ class Fraction {
   Fraction.fromDouble(double value) {
     double epsilon = 1.0e-10;
     if (value.isNaN || value.isInfinite) {
-      throw ArgumentError("Invalid input: $value");
+      throw ArgumentError("Invalid input");
     }
 
     int sign = value < 0 ? -1 : 1;
@@ -81,10 +81,6 @@ class Fraction {
   }
 
   void simplify() {
-    if (denominator == 0) {
-      throw Exception('The denominator may be 0');
-    }
-
     int gcd = _gcd(numerator, denominator);
 
     numerator = numerator ~/ gcd;
