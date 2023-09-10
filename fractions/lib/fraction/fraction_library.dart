@@ -1,8 +1,8 @@
 library fraction;
 
 class Fraction {
-  int? numerator;
-  int? denominator;
+  late int numerator;
+  late int denominator;
 
   Fraction(this.numerator, this.denominator) {
     if (denominator == 0) {
@@ -11,9 +11,19 @@ class Fraction {
     simplify();
   }
 
-  Fraction.fromJson(Map<String, int?> fraction) {
-    numerator = fraction['numerator'];
-    denominator = fraction['denominator'];
+  Fraction.fromJson(Map<String, int> fraction) {
+    if (!fraction.containsKey('numerator') ||
+        !fraction.containsKey('denominator')) {
+      throw ArgumentError("Invalid JSON format.");
+    }
+
+    numerator = fraction['numerator'] ?? 0;
+    denominator = fraction['denominator'] ?? 1;
+
+    if (denominator == 0) {
+      throw ArgumentError("Denominator cannot be zero.");
+    }
+
     simplify();
   }
 
@@ -21,6 +31,12 @@ class Fraction {
     List<String> numbers = fraction.split('/');
     if (numbers.length != 2) {
       throw Exception('There are less or more than 2 numbers');
+    }
+    if (int.parse(numbers[1]) == 0) {
+      throw ArgumentError('Denominator cannot be 0');
+    }
+    if (!isNumeric(numbers[0]) || !isNumeric(numbers[1])) {
+      throw ArgumentError('The fraction cannot have letters in it');
     }
 
     numerator = int.parse(numbers[0]);
@@ -69,16 +85,21 @@ class Fraction {
       throw Exception('The denominator may be 0');
     }
 
-    int gcd = _gcd(numerator!, denominator!);
+    int gcd = _gcd(numerator, denominator);
 
-    numerator = numerator! ~/ gcd;
-    denominator = denominator! ~/ gcd;
+    numerator = numerator ~/ gcd;
+    denominator = denominator ~/ gcd;
+  }
+
+  bool isNumeric(String str) {
+    final RegExp numericRegex = RegExp(r'^-?\d+$');
+    return numericRegex.hasMatch(str);
   }
 
   Fraction operator +(Fraction other) {
     int newNumerator =
-        (numerator! * other.denominator!) + (other.numerator! * denominator!);
-    int newDenominator = denominator! * other.denominator!;
+        (numerator * other.denominator) + (other.numerator * denominator);
+    int newDenominator = denominator * other.denominator;
     final result = Fraction(newNumerator, newDenominator);
     result.simplify();
     return result;
@@ -86,24 +107,24 @@ class Fraction {
 
   Fraction operator -(Fraction other) {
     int newNumerator =
-        numerator! * other.denominator! - other.numerator! * denominator!;
-    int newDenominator = denominator! * other.denominator!;
+        numerator * other.denominator - other.numerator * denominator;
+    int newDenominator = denominator * other.denominator;
     final result = Fraction(newNumerator, newDenominator);
     result.simplify();
     return result;
   }
 
   Fraction operator *(Fraction other) {
-    int newNumerator = numerator! * other.numerator!;
-    int newDenominator = denominator! * other.denominator!;
+    int newNumerator = numerator * other.numerator;
+    int newDenominator = denominator * other.denominator;
     final result = Fraction(newNumerator, newDenominator);
     result.simplify();
     return result;
   }
 
   Fraction operator /(Fraction other) {
-    int newNumerator = numerator! * other.denominator!;
-    int newDenominator = denominator! * other.numerator!;
+    int newNumerator = numerator * other.denominator;
+    int newDenominator = denominator * other.numerator;
     final result = Fraction(newNumerator, newDenominator);
     result.simplify();
     return result;
@@ -154,14 +175,14 @@ class Fraction {
     return result;
   }
 
-  bool get isProper => numerator! < denominator!;
+  bool get isProper => numerator < denominator;
 
-  bool get isImproper => numerator! >= denominator!;
+  bool get isImproper => numerator >= denominator;
 
-  bool get isWhole => numerator! % denominator! == 0;
+  bool get isWhole => numerator % denominator == 0;
 
   num toNum() {
-    return numerator! / denominator!;
+    return numerator / denominator;
   }
 
   @override
