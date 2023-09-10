@@ -147,3 +147,21 @@ class Fraction {
     return denominator == 1 ? '$numerator' : '$numerator/$denominator';
   }
 }
+
+extension IntToFraction on int {
+  Fraction toFraction() {
+    return Fraction(this, 1);
+  }
+}
+
+extension StringToFraction on String {
+  Fraction toFraction() {
+    return Fraction.fromString(this);
+  }
+}
+
+extension DoubleToFraction on double {
+  Fraction toFraction() {
+    return Fraction.fromDouble(this);
+  }
+}
