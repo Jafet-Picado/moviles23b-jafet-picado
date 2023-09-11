@@ -4,6 +4,7 @@ class Fraction {
   late int numerator;
   late int denominator;
 
+  /// Basic constructor that receives int values
   Fraction(this.numerator, this.denominator) {
     if (denominator == 0) {
       throw ArgumentError('Denominator cannot be 0');
@@ -11,6 +12,7 @@ class Fraction {
     simplify();
   }
 
+  /// Named constructor to create a Fraction with a JSON as parameter
   Fraction.fromJson(Map<String, int> fraction) {
     if (!fraction.containsKey('numerator') ||
         !fraction.containsKey('denominator')) {
@@ -27,6 +29,7 @@ class Fraction {
     simplify();
   }
 
+  /// Named constructor to create a Fraction with a String
   Fraction.fromString(String fraction) {
     List<String> numbers = fraction.split('/');
     if (numbers.length != 2) {
@@ -44,6 +47,7 @@ class Fraction {
     simplify();
   }
 
+  /// Named constructor to create a Fraction with a double value
   Fraction.fromDouble(double value) {
     double epsilon = 1.0e-10;
     if (value.isNaN || value.isInfinite) {
@@ -71,6 +75,7 @@ class Fraction {
     denominator = d ~/ gcdValue;
   }
 
+  /// Returns the greatest common divisor
   int _gcd(int a, int b) {
     while (b != 0) {
       final temp = b;
@@ -80,6 +85,7 @@ class Fraction {
     return a;
   }
 
+  /// Simplifies the numerator and denominator of a Fraction
   void simplify() {
     int gcd = _gcd(numerator, denominator);
 
@@ -87,11 +93,13 @@ class Fraction {
     denominator = denominator ~/ gcd;
   }
 
-  bool isNumeric(String str) {
+  /// Return true if a string has only numeric values (Except the minus symbol)
+  bool isNumeric(String fraction) {
     final RegExp numericRegex = RegExp(r'^-?\d+$');
-    return numericRegex.hasMatch(str);
+    return numericRegex.hasMatch(fraction);
   }
 
+  /// Plus operator overload method
   Fraction operator +(Fraction other) {
     int newNumerator =
         (numerator * other.denominator) + (other.numerator * denominator);
@@ -101,6 +109,7 @@ class Fraction {
     return result;
   }
 
+  /// Minus operator overload method
   Fraction operator -(Fraction other) {
     int newNumerator =
         numerator * other.denominator - other.numerator * denominator;
@@ -110,6 +119,7 @@ class Fraction {
     return result;
   }
 
+  /// Multiplication operator overload method
   Fraction operator *(Fraction other) {
     int newNumerator = numerator * other.numerator;
     int newDenominator = denominator * other.denominator;
@@ -118,6 +128,7 @@ class Fraction {
     return result;
   }
 
+  /// Division operator overload method
   Fraction operator /(Fraction other) {
     int newNumerator = numerator * other.denominator;
     int newDenominator = denominator * other.numerator;
@@ -126,22 +137,27 @@ class Fraction {
     return result;
   }
 
+  /// Less than operator overload method
   bool operator <(Fraction other) {
     return toNum() < other.toNum();
   }
 
+  /// Less than or equal operator overload method
   bool operator <=(Fraction other) {
     return toNum() <= other.toNum();
   }
 
+  /// Greater than operator overload method
   bool operator >(Fraction other) {
     return toNum() > other.toNum();
   }
 
+  /// Greater than or equal operator overload method
   bool operator >=(Fraction other) {
     return toNum() >= other.toNum();
   }
 
+  /// Equal operator overload method
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -152,9 +168,12 @@ class Fraction {
         denominator == other.denominator;
   }
 
+  /// Override the get hashCode to overload the equal operator
   @override
   int get hashCode => numerator.hashCode ^ denominator.hashCode;
 
+  /// Return the a Fraction pow based on the exponent
+  /// (Accepts negative exponents)
   Fraction pow(int exponent) {
     if (exponent == 0) {
       return Fraction(1, 1);
@@ -171,34 +190,42 @@ class Fraction {
     return result;
   }
 
+  /// Getter that returns true if a Fraction is proper
   bool get isProper => numerator < denominator;
 
+  /// Getter that returns true if a Fraction is improper
   bool get isImproper => numerator >= denominator;
 
+  /// Getter that returns true if a Fraction is whole
   bool get isWhole => numerator % denominator == 0;
 
+  /// Getter that returns the Fraction as a num value
   num toNum() {
     return numerator / denominator;
   }
 
+  /// toString override method to return the Fraction as an String
   @override
   String toString() {
     return denominator == 1 ? '$numerator' : '$numerator/$denominator';
   }
 }
 
+/// int type extension to add a method to create a Fraction with an int
 extension IntToFraction on int {
   Fraction toFraction() {
     return Fraction(this, 1);
   }
 }
 
+/// String type extension to add a method to create a Fraction with a String
 extension StringToFraction on String {
   Fraction toFraction() {
     return Fraction.fromString(this);
   }
 }
 
+/// double type extension to add a method to create a Fraction with an double
 extension DoubleToFraction on double {
   Fraction toFraction() {
     return Fraction.fromDouble(this);
