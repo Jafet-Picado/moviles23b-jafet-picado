@@ -41,7 +41,13 @@ class ExpressionCalculator {
     final outputQueue = Queue<Node>();
     final operatorStack = Queue<String>();
 
-    List<String?> tokens = _tokenize(expression);
+    List<String> tokens = _tokenize(expression);
+
+    for (String token in tokens) {
+      if (_isNumeric(token)) {
+        outputQueue.add(Node(_parseOperand(token)));
+      }
+    }
   }
 
   Fraction calculate() {
@@ -56,8 +62,17 @@ class ExpressionCalculator {
     return tokens;
   }
 
-  bool isNumeric(String value) {
-    return double.tryParse(value) != null;
+  bool _isNumeric(String value) {
+    return double.tryParse(value) != null || value.startsWith('[');
+  }
+
+  dynamic _parseOperand(String token) {
+    if (token.startsWith('[')) {
+      final fraction = token.substring(1, token.length - 1);
+      return Fraction.fromString(fraction);
+    } else {
+      return double.parse(token);
+    }
   }
 
   String getPreorderRoute() {
