@@ -23,6 +23,28 @@ class Node {
     preorder(node.left, buffer);
     preorder(node.right, buffer);
   }
+
+  dynamic calculate() {
+    if (value is int || value is double) {
+      return value;
+    } else if (value is Fraction) {
+      Fraction tmp = value;
+      return tmp.toNum();
+    } else if (value is String) {
+      switch (value) {
+        case '+':
+          return left!.calculate() + right!.calculate();
+        case '-':
+          return left!.calculate() - right!.calculate();
+        case '/':
+          return left!.calculate() / right!.calculate();
+        case '*':
+          return left!.calculate() * right!.calculate();
+        default:
+          throw ArgumentError('Invalid operator: $value');
+      }
+    }
+  }
 }
 
 class ExpressionCalculator {
@@ -88,8 +110,8 @@ class ExpressionCalculator {
     root = outputQueue.first;
   }
 
-  Fraction calculate() {
-    return Fraction(1, 1);
+  num calculate() {
+    return root!.calculate();
   }
 
   List<String> _tokenize(String expression) {
