@@ -48,6 +48,7 @@ class ExpressionCalculator {
         outputQueue.add(Node(_parseOperand(token)));
       } else if (_operators.contains(token)) {
         while (operatorStack.isNotEmpty &&
+            operatorStack.last != '(' &&
             _precedence[token]! <= _precedence[operatorStack.last]!) {
           final operator = operatorStack.removeLast();
           final right = outputQueue.removeLast();
