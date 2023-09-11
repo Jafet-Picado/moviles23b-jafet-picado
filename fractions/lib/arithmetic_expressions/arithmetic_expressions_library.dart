@@ -110,9 +110,9 @@ class ExpressionCalculator {
     root = outputQueue.first;
   }
 
-  num calculate() {
-    return root!.calculate();
-  }
+  num get calculateAsNum => root!.calculate();
+
+  Fraction get calculateAsFraction => Fraction.fromDouble(root!.calculate());
 
   List<String> _tokenize(String expression) {
     final pattern = RegExp(r"(\d+\.\d+|\d+|\[.*?\]|\+|\-|\*|\/|\(|\))|(\s+)");
