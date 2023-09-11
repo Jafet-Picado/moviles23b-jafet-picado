@@ -1,5 +1,7 @@
 library arithmethic_expressions_calculator;
 
+import 'dart:collection';
+
 import 'package:fractions/fraction/fraction_library.dart';
 
 class Node {
@@ -8,85 +10,57 @@ class Node {
   Node? right;
 
   Node(this.value, [this.left, this.right]);
+
+  String preorderRoute() {
+    final buffer = StringBuffer();
+    preorder(this, buffer);
+    return buffer.toString();
+  }
+
+  void preorder(Node? node, StringBuffer buffer) {
+    if (node == null) return;
+    buffer.write(node.value + ' ');
+    preorder(node.left, buffer);
+    preorder(node.right, buffer);
+  }
 }
 
 class ExpressionCalculator {
   Node? root;
 
+  static final Map<String, int> _precedence = {
+    '+': 1,
+    '-': 1,
+    '*': 2,
+    '/': 2,
+  };
+
+  static final _operators = _precedence.keys.toSet();
+
   void createTree(String expression) {
-    final stack = <Node>[];
-    final output = <Node>[];
+    final outputQueue = Queue<Node>();
+    final operatorStack = Queue<String>();
 
-    final tokens = expression.split(' ');
-
-    for (final token in tokens) {
-      if (token.startsWith('[') && token.endsWith(']')) {
-        final fraction = token.substring(1, token.length - 1);
-        final node = Node(Fraction.fromString(fraction));
-        output.add(node);
-      } else if (isNumeric(token)) {
-        final node = Node(token);
-        output.add(node);
-      } else if (token == '(') {
-        stack.add(Node(token));
-      } else if (token == ')') {
-        while (stack.isNotEmpty && stack.last.value != '(') {
-          final operation = stack.removeLast();
-          final b = stack.removeLast();
-          final a = stack.removeLast();
-          operation.left = a;
-          operation.right = b;
-          output.add(operation);
-        }
-        stack.removeLast();
-      } else {
-        while (stack.isNotEmpty &&
-            getPrecedence(token) <= getPrecedence(stack.last.value)) {
-          final operator = stack.removeLast();
-          final b = output.removeLast();
-          final a = output.removeLast();
-          operator.left = a;
-          operator.right = b;
-          output.add(operator);
-        }
-        stack.add(Node(token));
-      }
-
-      while (stack.isNotEmpty) {
-        final operator = stack.removeLast();
-        final b = output.removeLast();
-        final a = output.removeLast();
-        operator.left = a;
-        operator.right = b;
-        output.add(operator);
-      }
-
-      root = output.first;
-    }
-  }
-
-  int getPrecedence(String operator) {
-    switch (operator) {
-      case '+':
-      case '-':
-        return 1;
-      case '*':
-      case '/':
-        return 2;
-      default:
-        return 0;
-    }
+    List<String?> tokens = _tokenize(expression);
   }
 
   Fraction calculate() {
     return Fraction(1, 1);
   }
 
+  List<String> _tokenize(String expression) {
+    final pattern = RegExp(r"(\d+\.\d+|\d+|\[.*?\]|\+|\-|\*|\/|\(|\))|(\s+)");
+    final matches = pattern.allMatches(expression);
+    final tokens =
+        matches.map((match) => match.group(1)).whereType<String>().toList();
+    return tokens;
+  }
+
   bool isNumeric(String value) {
     return double.tryParse(value) != null;
   }
 
-  String infixToPrefix() {
-    return '';
+  String getPreorderRoute() {
+    return root!.preorderRoute();
   }
 }
