@@ -19,7 +19,7 @@ class Node {
 
   void preorder(Node? node, StringBuffer buffer) {
     if (node == null) return;
-    buffer.write(node.value + ' ');
+    buffer.write('${node.value.toString().replaceAll(RegExp(r'\.0$'), '')} ');
     preorder(node.left, buffer);
     preorder(node.right, buffer);
   }
@@ -46,8 +46,45 @@ class ExpressionCalculator {
     for (String token in tokens) {
       if (_isNumeric(token)) {
         outputQueue.add(Node(_parseOperand(token)));
+      } else if (_operators.contains(token)) {
+        while (operatorStack.isNotEmpty &&
+            _precedence[token]! <= _precedence[operatorStack.last]!) {
+          final operator = operatorStack.removeLast();
+          final right = outputQueue.removeLast();
+          final left = outputQueue.removeLast();
+          outputQueue.add(Node(operator)
+            ..left = left
+            ..right = right);
+        }
+        operatorStack.add(token);
+      } else if (token == '(') {
+        operatorStack.add(token);
+      } else if (token == ')') {
+        while (operatorStack.isNotEmpty && operatorStack.last != '(') {
+          final operator = operatorStack.removeLast();
+          final right = outputQueue.removeLast();
+          final left = outputQueue.removeLast();
+          outputQueue.add(Node(operator)
+            ..left = left
+            ..right = right);
+        }
+        operatorStack.removeLast();
       }
     }
+    while (operatorStack.isNotEmpty) {
+      final operator = operatorStack.removeLast();
+      final right = outputQueue.removeLast();
+      final left = outputQueue.removeLast();
+      outputQueue.add(Node(operator)
+        ..left = left
+        ..right = right);
+    }
+
+    if (outputQueue.isEmpty) {
+      throw ArgumentError('Invalid expression: $expression');
+    }
+
+    root = outputQueue.first;
   }
 
   Fraction calculate() {
