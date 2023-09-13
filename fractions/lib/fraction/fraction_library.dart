@@ -11,11 +11,12 @@ class Fraction {
   /// It has a precision parameter to treat the irrational numbers
   /// Also, all constructors throw an exception in case of the denominator
   /// being zero.
-  /// Example: Fraction(1,3) to num is 0.33 if the precision is
-  /// the default one instead of 0.33333333 because 1/3 returns an irrational
+  /// Example:
+  /// Fraction(1,3) to num is 0.3333333333 if the precision is
+  /// the default one because 1/3 returns an irrational
   /// number, but if the precision is changed, for example: Fraction(1, 3, 4)
   /// the result showed as num of the Fraction would be 0.3333
-  Fraction(this.numerator, this.denominator, [this.precision = 2]) {
+  Fraction(this.numerator, this.denominator, [this.precision = 10]) {
     if (denominator == 0) {
       throw ArgumentError('Denominator cannot be 0');
     }
@@ -26,7 +27,7 @@ class Fraction {
   /// Example:
   /// Map<String, int> tmp = {"numerator": 2, "denominator": 4};
   /// Fraction.fromJson(tmp) would create a 2/4 Fraction.
-  Fraction.fromJson(Map<String, int> fraction, [this.precision = 2]) {
+  Fraction.fromJson(Map<String, int> fraction, [this.precision = 10]) {
     if (!fraction.containsKey('numerator') ||
         !fraction.containsKey('denominator')) {
       throw ArgumentError("Invalid JSON format.");
@@ -50,7 +51,7 @@ class Fraction {
   /// doesn't create a 5/1 Fraction unless it is explicit
   /// Also, if the String has letters o symbols in it besides the /, it also would
   /// throw an exception.
-  Fraction.fromString(String fraction, [this.precision = 2]) {
+  Fraction.fromString(String fraction, [this.precision = 10]) {
     List<String> numbers = fraction.split('/');
     if (numbers.length != 2) {
       throw Exception('There are less or more than 2 values');
@@ -72,7 +73,7 @@ class Fraction {
   /// Fraction.fromDouble(0.50) would create a 1/2 Fraction
   /// If the value received is NaN or an Infinite value, the constructor would
   /// throw an exception.
-  Fraction.fromDouble(double value, [this.precision = 2]) {
+  Fraction.fromDouble(double value, [this.precision = 10]) {
     double epsilon = 1.0e-10;
     if (value.isNaN || value.isInfinite) {
       throw ArgumentError("Invalid input");
