@@ -1,11 +1,14 @@
 library fraction;
 
+import 'dart:math' as math;
+
 class Fraction {
   late int numerator;
   late int denominator;
+  late int precision;
 
   /// Basic constructor that receives int values
-  Fraction(this.numerator, this.denominator) {
+  Fraction(this.numerator, this.denominator, [this.precision = 2]) {
     if (denominator == 0) {
       throw ArgumentError('Denominator cannot be 0');
     }
@@ -13,7 +16,7 @@ class Fraction {
   }
 
   /// Named constructor to create a Fraction with a JSON as parameter
-  Fraction.fromJson(Map<String, int> fraction) {
+  Fraction.fromJson(Map<String, int> fraction, [this.precision = 2]) {
     if (!fraction.containsKey('numerator') ||
         !fraction.containsKey('denominator')) {
       throw ArgumentError("Invalid JSON format.");
@@ -30,7 +33,7 @@ class Fraction {
   }
 
   /// Named constructor to create a Fraction with a String
-  Fraction.fromString(String fraction) {
+  Fraction.fromString(String fraction, [this.precision = 2]) {
     List<String> numbers = fraction.split('/');
     if (numbers.length != 2) {
       throw Exception('There are less or more than 2 numbers');
@@ -48,7 +51,7 @@ class Fraction {
   }
 
   /// Named constructor to create a Fraction with a double value
-  Fraction.fromDouble(double value) {
+  Fraction.fromDouble(double value, [this.precision = 2]) {
     double epsilon = 1.0e-10;
     if (value.isNaN || value.isInfinite) {
       throw ArgumentError("Invalid input");
@@ -201,7 +204,9 @@ class Fraction {
 
   /// Getter that returns the Fraction as a num value
   num toNum() {
-    return numerator / denominator;
+    final result = numerator / denominator;
+    num multiplier = math.pow(10.0, precision);
+    return (result * multiplier).round() / multiplier;
   }
 
   /// toString override method to return the Fraction as an String
