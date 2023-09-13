@@ -110,7 +110,11 @@ class ExpressionCalculator {
     root = outputQueue.first;
   }
 
-  num get calculateAsNum => root!.calculate();
+  dynamic calculate([int type = 1]) {
+    return type == 1
+        ? root!.calculate()
+        : Fraction.fromDouble(root!.calculate());
+  }
 
   Fraction get calculateAsFraction => Fraction.fromDouble(root!.calculate());
 
