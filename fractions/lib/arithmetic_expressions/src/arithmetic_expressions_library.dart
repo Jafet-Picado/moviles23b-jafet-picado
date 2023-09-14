@@ -94,6 +94,8 @@ class ExpressionCalculator {
 
     List<String> tokens = _tokenize(expression);
     String previousToken = '';
+    int openParenthesis = 0;
+    int closeParenthesis = 0;
 
     for (String token in tokens) {
       if (_isNumeric(token)) {
@@ -114,8 +116,14 @@ class ExpressionCalculator {
         }
         operatorStack.add(token);
       } else if (token == '(') {
+        openParenthesis++;
         operatorStack.add(token);
       } else if (token == ')') {
+        closeParenthesis++;
+        if (openParenthesis < closeParenthesis) {
+          throw ArgumentError(
+              'Unbalanced parentheses in expression: $expression');
+        }
         while (operatorStack.isNotEmpty && operatorStack.last != '(') {
           final operator = operatorStack.removeLast();
           final right = outputQueue.removeLast();
@@ -128,6 +136,11 @@ class ExpressionCalculator {
       }
       previousToken = token;
     }
+
+    if (openParenthesis != closeParenthesis) {
+      throw ArgumentError('Unbalanced parentheses in expression: $expression');
+    }
+
     while (operatorStack.isNotEmpty) {
       final operator = operatorStack.removeLast();
       final right = outputQueue.removeLast();
