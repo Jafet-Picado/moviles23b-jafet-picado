@@ -3,8 +3,16 @@ library fraction;
 import 'dart:math' as math;
 
 class Fraction {
+  /// The number above in the Fraction, for example: 1/2,
+  ///  being 1 the numerator
   late int numerator;
+
+  /// The number below in the Fraction, for example: 1/2,
+  /// being 2 the denominator
   late int denominator;
+
+  /// Value used to know the number of decimals to use, mainly used to work
+  /// with irrational numbers
   int precision;
 
   /// Basic constructor that receives int values
@@ -145,7 +153,7 @@ class Fraction {
     return result;
   }
 
-  /// Minus operator overload method
+  /// Substraction operator overload method
   Fraction operator -(Fraction other) {
     int newNumerator =
         numerator * other.denominator - other.numerator * denominator;
@@ -208,7 +216,7 @@ class Fraction {
   @override
   int get hashCode => numerator.hashCode ^ denominator.hashCode;
 
-  /// Return the a Fraction's pow based on the exponent
+  /// Return the power of a fraction based on the exponent
   /// (Accepts negative exponents)
   /// Example:
   /// a = Fraction(1,3)

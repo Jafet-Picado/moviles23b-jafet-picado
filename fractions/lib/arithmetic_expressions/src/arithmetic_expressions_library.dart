@@ -5,8 +5,13 @@ import 'dart:collection';
 import 'package:fractions/fraction/src/fraction_library.dart';
 
 class Node {
+  /// Node's value, it can be an int, double, String or Fraction
   dynamic value;
+
+  /// Left child of the node
   Node? left;
+
+  /// Right child of the node
   Node? right;
 
   /// Node class Constructor, it receives a dynamic value (In this instance an
@@ -64,6 +69,7 @@ class Node {
 }
 
 class ExpressionCalculator {
+  /// Root of the binary tree, mainly the last operator to use
   Node? root;
 
   /// Map to know the precedence of each operator to keep the correct order
