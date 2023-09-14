@@ -86,16 +86,20 @@ class ExpressionCalculator {
   /// ([2] + 1) => Invalid expression
   /// (2 + 1 => Invalid expression
   /// 2 1 => Invalid expression
-  /// 2+1 => Invalid expression
+  /// 2+1 => Valid expression
   /// 2 + 1 => Valid Expression
   void createTree(String expression) {
     final outputQueue = Queue<Node>();
     final operatorStack = Queue<String>();
 
     List<String> tokens = _tokenize(expression);
+    String previousToken = '';
 
     for (String token in tokens) {
       if (_isNumeric(token)) {
+        if (_isNumeric(previousToken)) {
+          throw ArgumentError('Invalid expression: $expression');
+        }
         outputQueue.add(Node(_parseOperand(token)));
       } else if (_operators.contains(token)) {
         while (operatorStack.isNotEmpty &&
@@ -122,6 +126,7 @@ class ExpressionCalculator {
         }
         operatorStack.removeLast();
       }
+      previousToken = token;
     }
     while (operatorStack.isNotEmpty) {
       final operator = operatorStack.removeLast();
