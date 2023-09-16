@@ -37,5 +37,8 @@ void main() {
     tmp.createTree('([1/2] + (2 * 9)) - 2');
     Fraction fract = tmp.calculate(2);
     expect([tmp.calculate(), fract.toString()], [16.50, '33/2']);
+    tmp.createTree('[2/6] - -5');
+    fract = tmp.calculate(2);
+    expect([tmp.calculate(), fract.toString()], [5.3333333333, '16/3']);
   });
 }
