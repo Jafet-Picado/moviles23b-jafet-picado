@@ -84,7 +84,7 @@ class Fraction {
   Fraction.fromDouble(double value, [this.precision = 10]) {
     double epsilon = 1.0e-10;
     if (value.isNaN || value.isInfinite) {
-      throw ArgumentError("Invalid input: NaN of Infinite value");
+      throw ArgumentError("Invalid input: NaN or Infinite value");
     }
 
     int sign = value < 0 ? -1 : 1;
