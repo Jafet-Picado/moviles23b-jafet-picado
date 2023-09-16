@@ -110,6 +110,9 @@ class ExpressionCalculator {
         }
         outputQueue.add(Node(_parseOperand(token)));
       } else if (_operators.contains(token)) {
+        if (_operators.contains(previousToken)) {
+          throw ArgumentError('Invalid expression: $expression');
+        }
         while (operatorStack.isNotEmpty &&
             operatorStack.last != '(' &&
             _precedence[token]! <= _precedence[operatorStack.last]!) {
@@ -185,7 +188,8 @@ class ExpressionCalculator {
   /// "2 + 3" would return [2, +, 3]
   /// "([2/3] / 7) + 2" would return [(, [2/3], 7, ), +, 2]
   List<String> _tokenize(String expression) {
-    final pattern = RegExp(r"(-?\d+\.\d+|-?\d+|\[.*?\]|\+|\-|\*|\/|\(|\))|(\s+)");
+    final pattern =
+        RegExp(r"(-?\d+\.\d+|-?\d+|\[.*?\]|\+|\-|\*|\/|\(|\))|(\s+)");
     final matches = pattern.allMatches(expression);
     final tokens =
         matches.map((match) => match.group(1)).whereType<String>().toList();
