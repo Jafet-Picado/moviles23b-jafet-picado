@@ -3,12 +3,12 @@ library fraction;
 import 'dart:math' as math;
 
 class Fraction {
-  /// The number above in the Fraction, for example: 1/2,
-  ///  being 1 the numerator
+  /// The number above in the Fraction, for example: `1/2`,
+  ///  being `1` the numerator
   late int numerator;
 
-  /// The number below in the Fraction, for example: 1/2,
-  /// being 2 the denominator
+  /// The number below in the Fraction, for example: `1/2`,
+  /// being `2` the denominator
   late int denominator;
 
   /// Value used to know the number of decimals to use, mainly used to work
@@ -20,10 +20,10 @@ class Fraction {
   /// Also, all constructors throw an exception in case of the denominator
   /// being zero.
   /// Example:
-  /// Fraction(1,3) to num is 0.3333333333 if the precision is
-  /// the default one because 1/3 returns an irrational
+  /// Fraction(1,3) to num is `0.3333333333` if the precision is
+  /// the default one because `1/3` returns an irrational
   /// number, but if the precision is changed, for example: Fraction(1, 3, 4)
-  /// the result showed as num of the Fraction would be 0.3333
+  /// the result showed as num of the Fraction would be `0.3333`
   Fraction(this.numerator, this.denominator, [this.precision = 10]) {
     if (denominator == 0) {
       throw ArgumentError('Denominator cannot be 0');
@@ -34,7 +34,7 @@ class Fraction {
   /// Named constructor to create a Fraction with a JSON as parameter
   /// Example:
   /// Map<String, int> tmp = {"numerator": 2, "denominator": 4};
-  /// Fraction.fromJson(tmp) would create a 2/4 Fraction.
+  /// Fraction.fromJson(tmp) would create a `2/4` Fraction.
   Fraction.fromJson(Map<String, int> fraction, [this.precision = 10]) {
     if (!fraction.containsKey('numerator') ||
         !fraction.containsKey('denominator')) {
@@ -53,10 +53,10 @@ class Fraction {
 
   /// Named constructor to create a Fraction with a String
   /// Example:
-  /// Fraction.fromString("2/4") would create a 2/4 Fraction
+  /// Fraction.fromString("2/4") would create a `2/4` Fraction
   /// This constructor only accepts complete fractions, so if the String is
   /// Fraction.fromString("5") it would throw an exception because the constructor
-  /// doesn't create a 5/1 Fraction unless it is explicit
+  /// doesn't create a `5/1` Fraction unless it is explicit
   /// Also, if the String has letters o symbols in it besides the /, it also would
   /// throw an exception.
   Fraction.fromString(String fraction, [this.precision = 10]) {
@@ -78,7 +78,7 @@ class Fraction {
 
   /// Named constructor to create a Fraction with a double value
   /// Example:
-  /// Fraction.fromDouble(0.50) would create a 1/2 Fraction
+  /// Fraction.fromDouble(0.50) would create a `1/2` Fraction
   /// If the value received is NaN or an Infinite value, the constructor would
   /// throw an exception.
   Fraction.fromDouble(double value, [this.precision = 10]) {
@@ -110,7 +110,7 @@ class Fraction {
 
   /// Returns the greatest common divisor between two numbers
   /// Example:
-  /// _gcd(45, 30) returns 15
+  /// _gcd(45, 30) returns `15`
   int _gcd(int a, int b) {
     while (b != 0) {
       final temp = b;
@@ -122,8 +122,8 @@ class Fraction {
 
   /// Simplifies the numerator and denominator of a Fraction
   /// Example:
-  /// If it is a 2/4 fraction, then after the simplification the fraction is going
-  /// to be 1/2.
+  /// If it is a `2/4` fraction, then after the simplification the fraction is going
+  /// to be `1/2`.
   void simplify() {
     int gcd = _gcd(numerator, denominator);
 
@@ -133,11 +133,11 @@ class Fraction {
 
   /// Return true if a string has only numeric values (Except the minus symbol)
   /// Example:
-  /// "123" returns true
-  /// "-123" returns true
-  /// "1a2" returns false
-  /// "aaa" returns false
-  /// "-12a" returns false
+  /// `"123"` returns true
+  /// `"-123"` returns true
+  /// `"1a2"` returns false
+  /// `"aaa"` returns false
+  /// `"-12a"` returns false
   bool isNumeric(String fraction) {
     final RegExp numericRegex = RegExp(r'^-?\d+$');
     return numericRegex.hasMatch(fraction);
@@ -220,8 +220,8 @@ class Fraction {
   /// (Accepts negative exponents)
   /// Example:
   /// a = Fraction(1,3)
-  /// b = a.pow(2) => (1/3)^2 = 1/9
-  /// c = a.pow(-2) => (1/3)^-2 = (3/1)^2 = 9
+  /// b = a.pow(2) => `(1/3)^2` = `1/9`
+  /// c = a.pow(-2) => `(1/3)^-2` = `(3/1)^2` = `9`
   Fraction pow(int exponent) {
     if (exponent == 0) {
       return Fraction(1, 1);
@@ -241,30 +241,30 @@ class Fraction {
   /// Getter that returns true if a Fraction is proper, a fraction is proper
   /// when the denominator is greater than the numerator
   /// Example:
-  /// 1/2 returns true
-  /// 4/2 returns false
-  /// 3/3 returns false
+  /// `1/2` returns true
+  /// `4/2` returns false
+  /// `3/3` returns false
   bool get isProper => numerator < denominator;
 
   /// Getter that returns true if a Fraction is improper, a fraction is improper
   /// when the numerator is equal or greater than the denominator
   /// Example:
-  /// 1/2 returns false
-  /// 4/2 returns true
-  /// 3/3 returns true
+  /// `1/2` returns false
+  /// `4/2` returns true
+  /// `3/3` returns true
   bool get isImproper => numerator >= denominator;
 
   /// Getter that returns true if a Fraction is whole, a fraction is whole
   /// when the numerator and denominator are equal
   /// Example:
-  /// 1/2 returns false
-  /// 4/2 returns false
-  /// 3/3 returns true
+  /// `1/2` returns false
+  /// `4/2` returns false
+  /// `3/3` returns true
   bool get isWhole => numerator % denominator == 0;
 
   /// Returns the Fraction as a num value
   /// Example:
-  /// Fraction(1,2).toNum() would return 0.50
+  /// Fraction(1,2).toNum() would return `0.50`
   num toNum() {
     final result = numerator / denominator;
     num multiplier = math.pow(10.0, precision.toDouble());
@@ -273,9 +273,9 @@ class Fraction {
 
   /// toString override method to return the Fraction as an String
   /// Example:
-  /// print(Fraction(1,2)) would print 1/2
-  /// If the denominator is 1, then it would only print the numerator:
-  /// print(Fraction(2,1)) would print 2
+  /// print(Fraction(1,2)) would print `1/2`
+  /// If the denominator is `1`, then it would only print the numerator:
+  /// print(Fraction(2,1)) would print `2`
   @override
   String toString() {
     return denominator == 1 ? '$numerator' : '$numerator/$denominator';
@@ -284,7 +284,7 @@ class Fraction {
 
 /// int type extension to add a method to create a Fraction with an int
 /// Example:
-/// 10.toFraction() would return a 10/1 Fraction
+/// 10.toFraction() would return a `10/1` Fraction
 extension IntToFraction on int {
   Fraction toFraction() {
     return Fraction(this, 1);
@@ -293,7 +293,7 @@ extension IntToFraction on int {
 
 /// String type extension to add a method to create a Fraction with a String
 /// Example:
-/// "3/2".toFraction() would return a 3/2 Fraction
+/// "3/2".toFraction() would return a `3/2` Fraction
 extension StringToFraction on String {
   Fraction toFraction() {
     return Fraction.fromString(this);
@@ -302,7 +302,7 @@ extension StringToFraction on String {
 
 /// double type extension to add a method to create a Fraction with an double
 /// Example:
-/// 0.50.toFraction() would return a 1/2 Fraction
+/// 0.50.toFraction() would return a `1/2` Fraction
 extension DoubleToFraction on double {
   Fraction toFraction() {
     return Fraction.fromDouble(this);

@@ -5,7 +5,7 @@ import 'dart:collection';
 import 'package:fractions/fraction/src/fraction_library.dart';
 
 class Node {
-  /// Node's value, it can be an int, double, String or Fraction
+  /// Node value, it can be an int, double, String or Fraction
   dynamic value;
 
   /// Left child of the node
@@ -21,7 +21,7 @@ class Node {
 
   /// Returns a String with the binary tree values ordered in preorder.
   /// Example:
-  /// root = *, root.left = 2 and root.right = 3 it would return "* 2 3"
+  /// `root = *`, `root.left = 2` and `root.right = 3` => returns `* 2 3`
   String preorderRoute() {
     final buffer = StringBuffer();
     preorder(this, buffer);
@@ -41,10 +41,10 @@ class Node {
   /// Solves the expression by using a preorder route on the binary tree
   /// and doing the operations between the child of each operation.
   /// Example:
-  /// root = *, root.left = 2 and root.right = 3
-  /// The value returned would be 2 * 3 = 6
+  /// `root = *`, `root.left = 2` and `root.right = 3`
+  /// The value returned would be `2 * 3 = 6`
   /// But, if there is an invalid input like x instead of * to multiplication,
-  /// it would throw an exception
+  /// it would throw an ArgumentError exception
   dynamic calculate() {
     if (value is int || value is double) {
       return value;
@@ -84,16 +84,17 @@ class ExpressionCalculator {
   static final _operators = _precedence.keys.toSet();
 
   /// Creates the binary tree using the expression received.
-  /// Example of expressions:
-  /// (2 * 3) / 2 => Valid expression
-  /// (2 * 3) / (2 + 1) => Valid expression
-  /// (2 / (3 + 1)) => Valid expression
-  /// ([2/3] + 1) => Valid expression
-  /// ([2] + 1) => Invalid expression. Throws ArgumentError exception
-  /// (2 + 1 => Invalid expression. Throws ArgumentError exception
-  /// 2 1 => Invalid expression. Throws ArgumentError exception
-  /// 2+1 => Valid expression
-  /// 2 + 1 => Valid Expression
+  /// Example of valid expressions:
+  /// - `(2 * 3) / 2` => Valid expression
+  /// - `(2 * 3) / (2 + 1)` => Valid expression
+  /// - `(2 / (3 + 1))` => Valid expression
+  /// - `([2/3] + 1)` => Valid expression
+  /// - `2+1` => Valid expression
+  /// - `2 + 1` => Valid Expression
+  /// Example of invalid expressions:
+  /// - `([2] + 1)` => Invalid expression. Throws ArgumentError exception
+  /// - `(2 + 1` => Invalid expression. Throws ArgumentError exception
+  /// - `2 1` => Invalid expression. Throws ArgumentError exception
   void createTree(String expression) {
     final outputQueue = Queue<Node>();
     final operatorStack = Queue<String>();
@@ -171,9 +172,9 @@ class ExpressionCalculator {
   /// If the type parameter is the default one the value would be returned as num
   /// But, it the parameter is changed then the value would be returned as Fraction
   /// Example:
-  /// Expression: "(1 / 2) + 0.25".
-  /// Calculate with default type would return 0.75
-  /// Calculate with type changed would return 3/4
+  /// Expression: `(1 / 2) + 0.25`.
+  /// Calculate with default type would return `0.75`
+  /// Calculate with type changed would return `3/4`
   dynamic calculate([int type = 1]) {
     if (root == null) {
       throw StateError('Expression tree has not been created.');
@@ -185,8 +186,8 @@ class ExpressionCalculator {
 
   /// Returns a list with all the tokens of the expression
   /// Example:
-  /// "2 + 3" would return [2, +, 3]
-  /// "([2/3] / 7) + 2" would return [(, [2/3], 7, ), +, 2]
+  /// `2 + 3` would return `[2, +, 3]`
+  /// `([2/3] / 7) + 2` would return `[(, [2/3], 7, ), +, 2]`
   List<String> _tokenize(String expression) {
     final pattern =
         RegExp(r"(-?\d+\.\d+|-?\d+|\[.*?\]|\+|\-|\*|\/|\(|\))|(\s+)");
@@ -198,19 +199,20 @@ class ExpressionCalculator {
 
   /// Returns true if a string is a number or a Fraction
   /// Example:
-  /// 2 => true
-  /// 3.2 => true
-  /// [2/5] => true
-  /// 2a => false
+  /// `2` => true
+  /// `3.2` => true
+  /// `[2/5]` => true
+  /// `-2` => true
+  /// `2a` => false
   bool _isNumeric(String value) {
     return double.tryParse(value) != null || value.startsWith('[');
   }
 
   /// Converts or parse the token in to a double or Fraction type
   /// Example:
-  /// token = "2" => returns 2.0
-  /// token = "5.56" => returns 5.56
-  /// token = "[2/3]" => returns a 2/3 Fraction
+  /// token = `"2"` => returns `2.0`
+  /// token = `"5.56"` => returns `5.56`
+  /// token = `"[2/3]"` => returns a `2/3` Fraction
   dynamic _parseOperand(String token) {
     if (token.startsWith('[')) {
       final fraction = token.substring(1, token.length - 1);
