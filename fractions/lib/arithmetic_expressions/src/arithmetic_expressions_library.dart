@@ -89,9 +89,9 @@ class ExpressionCalculator {
   /// (2 * 3) / (2 + 1) => Valid expression
   /// (2 / (3 + 1)) => Valid expression
   /// ([2/3] + 1) => Valid expression
-  /// ([2] + 1) => Invalid expression
-  /// (2 + 1 => Invalid expression
-  /// 2 1 => Invalid expression
+  /// ([2] + 1) => Invalid expression. Throws ArgumentError exception
+  /// (2 + 1 => Invalid expression. Throws ArgumentError exception
+  /// 2 1 => Invalid expression. Throws ArgumentError exception
   /// 2+1 => Valid expression
   /// 2 + 1 => Valid Expression
   void createTree(String expression) {
