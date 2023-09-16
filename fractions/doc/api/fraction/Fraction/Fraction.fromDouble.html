@@ -83,7 +83,7 @@ throw an exception.</p>
   <pre class="language-dart"><code class="language-dart">Fraction.fromDouble(double value, [this.precision = 10]) {
   double epsilon = 1.0e-10;
   if (value.isNaN || value.isInfinite) {
-    throw ArgumentError(&quot;Invalid input: NaN of Infinite value&quot;);
+    throw ArgumentError(&quot;Invalid input: NaN or Infinite value&quot;);
   }
 
   int sign = value &lt; 0 ? -1 : 1;
