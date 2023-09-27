@@ -86,11 +86,22 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           }
           break;
         case '+/-':
-          if (bigScreen[0] == '-') {
+          if (fractionValue) {
             bigScreen = bigScreen.substring(1);
+            if (bigScreen[0] == '-') {
+              bigScreen = bigScreen.substring(1);
+            } else {
+              final tmp = '-$bigScreen';
+              bigScreen = tmp;
+            }
+            bigScreen = '[$bigScreen';
           } else {
-            final tmp = '-$bigScreen';
-            bigScreen = tmp;
+            if (bigScreen[0] == '-') {
+              bigScreen = bigScreen.substring(1);
+            } else {
+              final tmp = '-$bigScreen';
+              bigScreen = tmp;
+            }
           }
           break;
         case 'SD':
