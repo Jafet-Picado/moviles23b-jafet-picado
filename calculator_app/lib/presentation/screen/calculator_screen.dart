@@ -18,6 +18,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   bool operatorClicked = false;
   bool equalClicked = false;
   bool fractionResult = false;
+  bool fractionValue = false;
   num result = 0;
 
   void onPress(String text) {
@@ -28,12 +29,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           bigScreen = '0';
           operatorClicked = false;
           equalClicked = false;
+          fractionValue = false;
           break;
         case 'backspace':
           if (bigScreen == '0') break;
           if (bigScreen.length == 1) {
             bigScreen = '0';
             operatorClicked = false;
+            fractionValue = false;
           } else {
             bigScreen = bigScreen.substring(0, bigScreen.length - 1);
           }
@@ -46,14 +49,23 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             smallScreen = '$smallScreen$bigScreen $text ';
             operatorClicked = true;
           }
+          if (fractionValue) fractionValue = false;
           break;
         case '^':
           bigScreen = '$bigScreen^';
+          if (fractionValue) fractionValue = false;
           break;
         case '=':
           try {
             String tmp = smallScreen + bigScreen;
             smallScreen = tmp;
+            tmp = tmp.replaceAllMapped(
+                RegExp(r'(-?\d+(\.\d+)?)\^(-?\d+(\.\d+)?)'), (match) {
+              double base = double.parse(match.group(1)!);
+              double exponent = double.parse(match.group(3)!);
+              num powerResult = pow(base, exponent);
+              return powerResult.toString();
+            });
             tmp = tmp.replaceAllMapped(
                 RegExp(r'(-?\d+(\.\d+)?)\^(-?\d+(\.\d+)?)'), (match) {
               double base = double.parse(match.group(1)!);
@@ -92,10 +104,19 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             }
           }
           break;
+        case '[/]':
+          if (bigScreen.isNotEmpty && !fractionValue) {
+            bigScreen = '[$bigScreen/]';
+            fractionValue = true;
+          }
+          break;
         default:
           if (bigScreen == '0' || operatorClicked) {
             bigScreen = text;
             operatorClicked = false;
+          } else if (fractionValue) {
+            String tmp = bigScreen.substring(0, bigScreen.length - 1);
+            bigScreen = '$tmp$text]';
           } else {
             bigScreen = bigScreen + text;
           }
@@ -201,9 +222,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     onPressed: () => onPress('^'),
                   ),
                   CalculatorBtn(
-                    text: '[ ]',
+                    text: '[/]',
                     backgroundColor: const Color(0xff9C0D38),
-                    onPressed: () => (),
+                    onPressed: () => onPress('[/]'),
                   ),
                 ],
               ),
