@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:calculator_app/infrastructure/arithmethic_expressions/src/arithmetic_expressions_library.dart'
     as expressions;
@@ -9,18 +11,10 @@ class CalculatorScreen extends StatefulWidget {
   State<CalculatorScreen> createState() => _CalculatorScreenState();
 }
 
-enum Operations { sum, sub, mult, div }
-
 class _CalculatorScreenState extends State<CalculatorScreen> {
   String smallScreen = '';
   String bigScreen = '';
-
-  late Operations oper;
-  bool operatorAssigned = false;
-
-  num? value1;
-  num? value2;
-
+  bool operatorClicked = false;
   num result = 0;
 
   void onPress(String text) {
@@ -29,48 +23,45 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         case 'AC':
           smallScreen = '';
           bigScreen = '0';
+          operatorClicked = false;
           break;
         case 'backspace':
           if (bigScreen == '0') break;
           if (bigScreen.length == 1) {
             bigScreen = '0';
+            operatorClicked = false;
           } else {
             bigScreen = bigScreen.substring(0, bigScreen.length - 1);
           }
           break;
         case '+':
-          operatorAssigned = true;
-          oper = Operations.sum;
-          value1 = num.parse(bigScreen);
-          smallScreen = '$bigScreen + ';
-          break;
         case '-':
-          operatorAssigned = true;
-          oper = Operations.sub;
-          value1 = num.parse(bigScreen);
-          smallScreen = '$bigScreen - ';
-          break;
         case '*':
-          operatorAssigned = true;
-          oper = Operations.mult;
-          value1 = num.parse(bigScreen);
-          smallScreen = '$bigScreen * ';
-          break;
         case '/':
-          operatorAssigned = true;
-          oper = Operations.div;
-          value1 = num.parse(bigScreen);
-          smallScreen = '$bigScreen / ';
+          if (!operatorClicked) {
+            smallScreen = '$smallScreen$bigScreen $text ';
+            operatorClicked = true;
+          }
+          break;
+        case '^':
+          bigScreen = '$bigScreen^';
           break;
         case '=':
-          value2 = num.parse(bigScreen);
-          final tmp = smallScreen + value2.toString();
+          String tmp = smallScreen + bigScreen;
+          smallScreen = tmp;
+          tmp = tmp.replaceAllMapped(
+              RegExp(r'(-?\d+(\.\d+)?)\^(-?\d+(\.\d+)?)'), (match) {
+            double base = double.parse(match.group(1)!);
+            double exponent = double.parse(match.group(3)!);
+            num powerResult = pow(base, exponent);
+            return powerResult.toString();
+          });
           final calc = expressions.ExpressionCalculator();
           calc.createTree(tmp);
-          smallScreen = '$smallScreen$value2=';
+          smallScreen = '$smallScreen=';
           result = calc.calculate();
           bigScreen = '$result';
-          operatorAssigned = false;
+          operatorClicked = false;
           break;
         case '+/-':
           if (bigScreen[0] == '-') {
@@ -81,12 +72,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           }
           break;
         default:
-          if (operatorAssigned) {
-            bigScreen = '0';
-            operatorAssigned = false;
-          }
-          if (bigScreen == '0') {
+          if (bigScreen == '0' || operatorClicked) {
             bigScreen = text;
+            operatorClicked = false;
           } else {
             bigScreen = bigScreen + text;
           }
@@ -167,6 +155,34 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     text: "/",
                     backgroundColor: const Color(0xff9C0D38),
                     onPressed: () => onPress('/'),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CalculatorBtn(
+                    text: '(',
+                    backgroundColor: const Color(0xff9C0D38),
+                    onPressed: () => onPress('('),
+                  ),
+                  CalculatorBtn(
+                    text: ')',
+                    backgroundColor: const Color(0xff9C0D38),
+                    onPressed: () => onPress(')'),
+                  ),
+                  CalculatorBtn(
+                    text: '^',
+                    backgroundColor: const Color(0xff9C0D38),
+                    onPressed: () => onPress('^'),
+                  ),
+                  CalculatorBtn(
+                    text: '[ ]',
+                    backgroundColor: const Color(0xff9C0D38),
+                    onPressed: () => (),
                   ),
                 ],
               ),
@@ -309,20 +325,20 @@ class CalculatorBtn extends StatelessWidget {
       onTap: onPressed,
       radius: 20,
       child: Container(
-        height: 70,
-        width: 70,
+        height: 58,
+        width: 58,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(50),
         ),
         child: (icon != null)
-            ? Icon(icon, size: 35, color: Colors.white)
+            ? Icon(icon, size: 30, color: Colors.white)
             : Text(text,
                 style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
-                    fontSize: 30)),
+                    fontSize: 25)),
       ),
     );
   }
