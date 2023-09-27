@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:calculator_app/domain/fractions/src/fraction_library.dart';
 import 'package:flutter/material.dart';
 import 'package:calculator_app/infrastructure/arithmethic_expressions/src/arithmetic_expressions_library.dart'
     as expressions;
@@ -15,6 +16,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   String smallScreen = '';
   String bigScreen = '';
   bool operatorClicked = false;
+  bool equalClicked = false;
+  bool fractionResult = false;
   num result = 0;
 
   void onPress(String text) {
@@ -24,6 +27,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           smallScreen = '';
           bigScreen = '0';
           operatorClicked = false;
+          equalClicked = false;
           break;
         case 'backspace':
           if (bigScreen == '0') break;
@@ -47,21 +51,27 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           bigScreen = '$bigScreen^';
           break;
         case '=':
-          String tmp = smallScreen + bigScreen;
-          smallScreen = tmp;
-          tmp = tmp.replaceAllMapped(
-              RegExp(r'(-?\d+(\.\d+)?)\^(-?\d+(\.\d+)?)'), (match) {
-            double base = double.parse(match.group(1)!);
-            double exponent = double.parse(match.group(3)!);
-            num powerResult = pow(base, exponent);
-            return powerResult.toString();
-          });
-          final calc = expressions.ExpressionCalculator();
-          calc.createTree(tmp);
-          smallScreen = '$smallScreen=';
-          result = calc.calculate();
-          bigScreen = '$result';
-          operatorClicked = false;
+          try {
+            String tmp = smallScreen + bigScreen;
+            smallScreen = tmp;
+            tmp = tmp.replaceAllMapped(
+                RegExp(r'(-?\d+(\.\d+)?)\^(-?\d+(\.\d+)?)'), (match) {
+              double base = double.parse(match.group(1)!);
+              double exponent = double.parse(match.group(3)!);
+              num powerResult = pow(base, exponent);
+              return powerResult.toString();
+            });
+            final calc = expressions.ExpressionCalculator();
+            calc.createTree(tmp);
+            smallScreen = '$smallScreen=';
+            result = calc.calculate();
+            bigScreen = '$result';
+            operatorClicked = false;
+            equalClicked = true;
+          } catch (message) {
+            smallScreen = '';
+            bigScreen = 'Error';
+          }
           break;
         case '+/-':
           if (bigScreen[0] == '-') {
@@ -69,6 +79,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           } else {
             final tmp = '-$bigScreen';
             bigScreen = tmp;
+          }
+          break;
+        case 'SD':
+          if (equalClicked) {
+            if (!fractionResult) {
+              bigScreen = Fraction.fromDouble(result.toDouble()).toString();
+              fractionResult = true;
+            } else {
+              bigScreen = '$result';
+              fractionResult = false;
+            }
           }
           break;
         default:
@@ -142,9 +163,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     onPressed: () => onPress('AC'),
                   ),
                   CalculatorBtn(
-                    icon: Icons.percent_rounded,
+                    text: 'S-D',
                     backgroundColor: Colors.white38,
-                    onPressed: () => (),
+                    onPressed: () => onPress('SD'),
                   ),
                   CalculatorBtn(
                     icon: Icons.backspace_rounded,
