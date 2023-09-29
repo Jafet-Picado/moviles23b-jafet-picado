@@ -15,6 +15,7 @@ class CalculatorScreen extends StatefulWidget {
 class _CalculatorScreenState extends State<CalculatorScreen> {
   final expressionsLibrary = expressions.ExpressionCalculator();
   String smallScreen = '';
+  String smallScreenGlyph = '';
   String bigScreen = '';
   bool operatorClicked = false;
   bool equalClicked = false;
@@ -62,7 +63,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             smallScreen = tmp;
             tmp = expressionsLibrary.extractPower(tmp);
             expressionsLibrary.createTree(tmp);
-            smallScreen = '$smallScreen=';
+            smallScreen = '$smallScreen =';
             result = expressionsLibrary.calculate();
             bigScreen = '$result';
             operatorClicked = false;
@@ -117,6 +118,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           if (bigScreen == '0' || operatorClicked) {
             bigScreen = text;
             operatorClicked = false;
+          } else if (equalClicked) {
+            equalClicked = false;
+            smallScreen = '';
+            bigScreen = text;
           } else if (fractionValue) {
             if (text == ')') {
               bigScreen = '$bigScreen)';
@@ -128,6 +133,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             bigScreen = bigScreen + text;
           }
       }
+      smallScreenGlyph = smallScreen.replaceAll('[', '').replaceAll(']', '');
     });
   }
 
@@ -148,7 +154,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         const SizedBox(
           height: 15,
         ),
-        CalculatorDisplay(text: smallScreen, fontSize: 30, height: 40),
+        CalculatorDisplay(
+            text: smallScreenGlyph, fontSize: 30, height: 40, glyph: true),
         const SizedBox(
           height: 15,
         ),
