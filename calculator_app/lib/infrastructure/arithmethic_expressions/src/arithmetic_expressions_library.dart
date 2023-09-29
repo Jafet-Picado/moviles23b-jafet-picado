@@ -1,6 +1,7 @@
 library arithmethic_expressions_calculator;
 
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:calculator_app/domain/fractions/src/fraction_library.dart';
 
@@ -226,5 +227,31 @@ class ExpressionCalculator {
   /// the binary tree preorder route
   String getPreorderRoute() {
     return root!.preorderRoute();
+  }
+
+  /// Replaces all the values with power from the expression to the result of
+  /// the power to be able to solve it.
+  /// Example:
+  /// Original expression: [4/2]^2 + 2^2
+  /// After replacing: [4/1] + 4
+  String extractPower(String expression) {
+    expression = expression
+        .replaceAllMapped(RegExp(r'(-?\d+(\.\d+)?)\^(-?\d+)'), (match) {
+      double base = double.parse(match.group(1)!);
+      double exponent = double.parse(match.group(3)!);
+      num powerResult = pow(base, exponent);
+      return powerResult.toString();
+    });
+    expression = expression
+        .replaceAllMapped(RegExp(r'\[(-?\d+/\d+)\]\^(-?\d+)'), (match) {
+      String base = match.group(1)!;
+      int exponent = int.parse(match.group(2)!);
+      Fraction frac = Fraction.fromString(base);
+      frac = frac.pow(exponent);
+      String tmp = frac.toString();
+      if (frac.denominator == 1) tmp = '$tmp/1';
+      return '[$tmp]';
+    });
+    return expression;
   }
 }
