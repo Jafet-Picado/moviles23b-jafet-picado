@@ -83,6 +83,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               bigScreen = tmp;
             }
             bigScreen = '[$bigScreen';
+          } else if (bigScreen.contains('^')) {
+            if (bigScreen.contains('^-')) {
+              bigScreen = bigScreen.replaceAll('^-', '^');
+            } else {
+              bigScreen = bigScreen.replaceAll('^', '^-');
+            }
           } else {
             if (bigScreen[0] == '-') {
               bigScreen = bigScreen.substring(1);
