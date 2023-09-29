@@ -13,7 +13,9 @@ class Calculator extends StatelessWidget {
     return MaterialApp(
       title: 'Calculadora',
       theme: ThemeData(
-          useMaterial3: true, colorSchemeSeed: const Color(0xff9C0D38)),
+          useMaterial3: true,
+          colorSchemeSeed: const Color(0xff9C0D38),
+          fontFamily: 'Roboto'),
       home: const CalculatorScreen(),
     );
   }
