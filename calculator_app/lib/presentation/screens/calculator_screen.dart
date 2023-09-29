@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:calculator_app/domain/fractions/src/fraction_library.dart';
+import 'package:calculator_app/presentation/widgets/calculator_display.dart';
 import 'package:flutter/material.dart';
 import 'package:calculator_app/infrastructure/arithmethic_expressions/src/arithmetic_expressions_library.dart'
     as expressions;
@@ -14,6 +13,7 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
+  final expressionsLibrary = expressions.ExpressionCalculator();
   String smallScreen = '';
   String bigScreen = '';
   bool operatorClicked = false;
@@ -60,24 +60,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           try {
             String tmp = smallScreen + bigScreen;
             smallScreen = tmp;
-            tmp = tmp.replaceAllMapped(
-                RegExp(r'(-?\d+(\.\d+)?)\^(-?\d+(\.\d+)?)'), (match) {
-              double base = double.parse(match.group(1)!);
-              double exponent = double.parse(match.group(3)!);
-              num powerResult = pow(base, exponent);
-              return powerResult.toString();
-            });
-            tmp = tmp.replaceAllMapped(
-                RegExp(r'(-?\d+(\.\d+)?)\^(-?\d+(\.\d+)?)'), (match) {
-              double base = double.parse(match.group(1)!);
-              double exponent = double.parse(match.group(3)!);
-              num powerResult = pow(base, exponent);
-              return powerResult.toString();
-            });
-            final calc = expressions.ExpressionCalculator();
-            calc.createTree(tmp);
+            tmp = expressionsLibrary.extractPower(tmp);
+            expressionsLibrary.createTree(tmp);
             smallScreen = '$smallScreen=';
-            result = calc.calculate();
+            result = expressionsLibrary.calculate();
             bigScreen = '$result';
             operatorClicked = false;
             equalClicked = true;
@@ -118,7 +104,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           break;
         case '[/]':
           if (bigScreen.isNotEmpty && !fractionValue) {
-            bigScreen = '[$bigScreen/]';
+            if (bigScreen[0] == '(') {
+              bigScreen = bigScreen.substring(1);
+              bigScreen = '([$bigScreen/]';
+            } else {
+              bigScreen = '[$bigScreen/]';
+            }
             fractionValue = true;
           }
           break;
@@ -127,8 +118,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             bigScreen = text;
             operatorClicked = false;
           } else if (fractionValue) {
-            String tmp = bigScreen.substring(0, bigScreen.length - 1);
-            bigScreen = '$tmp$text]';
+            if (text == ')') {
+              bigScreen = '$bigScreen)';
+            } else {
+              String tmp = bigScreen.substring(0, bigScreen.length - 1);
+              bigScreen = '$tmp$text]';
+            }
           } else {
             bigScreen = bigScreen + text;
           }
@@ -153,33 +148,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         const SizedBox(
           height: 15,
         ),
-        Container(
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          color: Colors.white,
-          height: 40,
-          width: double.infinity,
-          child: Text(
-            smallScreen,
-            style: const TextStyle(
-                color: Colors.black, fontSize: 30, fontWeight: FontWeight.w400),
-          ),
-        ),
+        CalculatorDisplay(text: smallScreen, fontSize: 30, height: 40),
         const SizedBox(
           height: 15,
         ),
-        Container(
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          color: Colors.white,
-          height: 100,
-          width: double.infinity,
-          child: Text(
-            bigScreen,
-            style: const TextStyle(
-                color: Colors.black, fontSize: 70, fontWeight: FontWeight.w400),
-          ),
-        ),
+        CalculatorDisplay(text: bigScreen, fontSize: 70, height: 100),
         const SizedBox(
           height: 15,
         ),
