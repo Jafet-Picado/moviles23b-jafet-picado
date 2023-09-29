@@ -21,7 +21,6 @@ class CalculatorDisplay extends StatelessWidget {
       color: Colors.black,
       fontSize: fontSize,
       fontWeight: FontWeight.w400,
-      fontFamily: 'Roboto',
     );
 
     final fractionStyle = defaultStyle.copyWith(
