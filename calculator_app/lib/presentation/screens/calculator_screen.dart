@@ -4,6 +4,7 @@ import 'package:calculator_app/domain/fractions/src/fraction_library.dart';
 import 'package:flutter/material.dart';
 import 'package:calculator_app/infrastructure/arithmethic_expressions/src/arithmetic_expressions_library.dart'
     as expressions;
+import 'package:calculator_app/presentation/widgets/calculator_button.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});
@@ -138,7 +139,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -155,13 +156,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         Container(
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          color: Colors.black,
+          color: Colors.white,
           height: 40,
           width: double.infinity,
           child: Text(
             smallScreen,
             style: const TextStyle(
-                color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400),
+                color: Colors.black, fontSize: 30, fontWeight: FontWeight.w400),
           ),
         ),
         const SizedBox(
@@ -170,13 +171,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         Container(
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          color: Colors.black,
+          color: Colors.white,
           height: 100,
           width: double.infinity,
           child: Text(
             bigScreen,
             style: const TextStyle(
-                color: Colors.white, fontSize: 70, fontWeight: FontWeight.w400),
+                color: Colors.black, fontSize: 70, fontWeight: FontWeight.w400),
           ),
         ),
         const SizedBox(
@@ -196,12 +197,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   ),
                   CalculatorBtn(
                     text: 'S-D',
-                    backgroundColor: Colors.white38,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress('SD'),
                   ),
                   CalculatorBtn(
                     icon: Icons.backspace_rounded,
-                    backgroundColor: Colors.white38,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("backspace"),
                   ),
                   CalculatorBtn(
@@ -247,17 +248,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 children: [
                   CalculatorBtn(
                     text: "7",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("7"),
                   ),
                   CalculatorBtn(
                     text: "8",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("8"),
                   ),
                   CalculatorBtn(
                     text: "9",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("9"),
                   ),
                   CalculatorBtn(
@@ -275,17 +276,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 children: [
                   CalculatorBtn(
                     text: "4",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("4"),
                   ),
                   CalculatorBtn(
                     text: "5",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("5"),
                   ),
                   CalculatorBtn(
                     text: "6",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("6"),
                   ),
                   CalculatorBtn(
@@ -303,17 +304,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 children: [
                   CalculatorBtn(
                     text: "1",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("1"),
                   ),
                   CalculatorBtn(
                     text: "2",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("2"),
                   ),
                   CalculatorBtn(
                     text: "3",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("3"),
                   ),
                   CalculatorBtn(
@@ -331,17 +332,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 children: [
                   CalculatorBtn(
                     text: "+/-",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("+/-"),
                   ),
                   CalculatorBtn(
                     text: "0",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("0"),
                   ),
                   CalculatorBtn(
                     text: ".",
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.grey,
                     onPressed: () => onPress("."),
                   ),
                   CalculatorBtn(
@@ -355,44 +356,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           ),
         ),
       ]),
-    );
-  }
-}
-
-class CalculatorBtn extends StatelessWidget {
-  final IconData? icon;
-  final String text;
-  final Color backgroundColor;
-  final VoidCallback? onPressed;
-
-  const CalculatorBtn(
-      {this.icon,
-      this.text = '',
-      required this.backgroundColor,
-      this.onPressed,
-      super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkResponse(
-      onTap: onPressed,
-      radius: 20,
-      child: Container(
-        height: 58,
-        width: 58,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: (icon != null)
-            ? Icon(icon, size: 30, color: Colors.white)
-            : Text(text,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 25)),
-      ),
     );
   }
 }
