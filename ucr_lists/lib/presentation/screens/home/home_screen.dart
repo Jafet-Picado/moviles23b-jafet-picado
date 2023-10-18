@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ucr_lists/presentation/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,9 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Center(
             child: Text('Cursos'),
           ),
-          Center(
-            child: Text('Profesores'),
-          ),
+          ProfessorsListView(),
           Center(
             child: Text('Estudiantes'),
           ),
@@ -44,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_rounded), label: 'Cursos'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.school_rounded), label: 'Profeores'),
+              icon: Icon(Icons.school_rounded), label: 'Profesores'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person_2_rounded), label: 'Estudiantes'),
         ],
