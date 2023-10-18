@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfessorsListView extends StatelessWidget {
   const ProfessorsListView({super.key});
@@ -28,7 +29,9 @@ class ProfessorsListView extends StatelessWidget {
         child: SizedBox(),
       ),
       FilledButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            context.push('/add-professor');
+          },
           icon: const Icon(Icons.add),
           label: const Text('Agregar profesor')),
       const SizedBox(
