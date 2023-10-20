@@ -24,4 +24,9 @@ class IsarService {
       await isar.professors.put(professor);
     });
   }
+
+  Future<List<Professor>> getProfessors() async {
+    final isar = await db;
+    return await isar.professors.where().findAll();
+  }
 }
