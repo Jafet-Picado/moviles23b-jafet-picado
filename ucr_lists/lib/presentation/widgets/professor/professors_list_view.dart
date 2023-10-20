@@ -61,6 +61,9 @@ class _ProfessorsListViewState extends State<ProfessorsListView> {
                     (value) => Future.delayed(const Duration(milliseconds: 250),
                         () => context.read<ProfessorCubit>().getProfessors()));
               },
+              onPressedView: () {
+                context.push('/professor/${professors[index].id!}');
+              },
             );
           },
         ),
