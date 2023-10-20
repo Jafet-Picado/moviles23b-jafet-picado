@@ -7,34 +7,59 @@ import 'package:ucr_lists/presentation/blocs.dart';
 import 'package:ucr_lists/presentation/widgets.dart';
 
 class ProfessorAddModifyScreen extends StatelessWidget {
-  const ProfessorAddModifyScreen({super.key});
+  final int? id;
+
+  const ProfessorAddModifyScreen({super.key, this.id});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [BlocProvider(create: (context) => ProfessorCubit())],
-      child: const _ProfessorAddModifyScreen(),
+      child: _ProfessorAddModifyScreen(
+        id: id,
+      ),
     );
   }
 }
 
-class _ProfessorAddModifyScreen extends StatelessWidget {
-  const _ProfessorAddModifyScreen();
+class _ProfessorAddModifyScreen extends StatefulWidget {
+  final int? id;
+
+  const _ProfessorAddModifyScreen({this.id});
+
+  @override
+  State<_ProfessorAddModifyScreen> createState() =>
+      _ProfessorAddModifyScreenState();
+}
+
+class _ProfessorAddModifyScreenState extends State<_ProfessorAddModifyScreen> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.id != null) {
+      context.read<ProfessorCubit>().getProfessor(widget.id!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final firstName = context.watch<ProfessorCubit>().state.firstName;
+    final lastName = context.watch<ProfessorCubit>().state.lastName;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agregar profesor'),
+        title: (widget.id == null)
+            ? const Text('Agregar profesor')
+            : Text('$firstName $lastName'),
       ),
-      body: const SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 15),
+      body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              _ProfessorFormView()
+              _ProfessorFormView(id: widget.id)
             ],
           )),
     );
@@ -42,7 +67,8 @@ class _ProfessorAddModifyScreen extends StatelessWidget {
 }
 
 class _ProfessorFormView extends StatefulWidget {
-  const _ProfessorFormView();
+  final int? id;
+  const _ProfessorFormView({this.id});
 
   @override
   State<_ProfessorFormView> createState() => _ProfessorFormViewState();
@@ -81,6 +107,13 @@ class _ProfessorFormViewState extends State<_ProfessorFormView> {
 
   @override
   Widget build(BuildContext context) {
+    final professorCubit = context.watch<ProfessorCubit>();
+    if (widget.id != null) {
+      _firstNameController.text =
+          context.read<ProfessorCubit>().state.firstName;
+      _lastNameController.text = context.read<ProfessorCubit>().state.lastName;
+    }
+
     return Form(
         key: _keyForm,
         child: Column(
@@ -121,21 +154,23 @@ class _ProfessorFormViewState extends State<_ProfessorFormView> {
                       Professor professor = Professor()
                         ..firstName = _firstNameController.text
                         ..lastName = _lastNameController.text;
-                      context.read<ProfessorCubit>().addProfessor(professor);
+                      if (widget.id != null) professor.id = widget.id;
+                      professorCubit.addProfessor(professor);
                       _clearForm();
                       context.pop();
                     }
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.save),
-                        SizedBox(
+                        const Icon(Icons.save),
+                        const SizedBox(
                           width: 10,
                         ),
-                        Text('Guardar'),
+                        Text((widget.id == null) ? 'Guardar' : 'Modificar'),
                       ],
                     ),
                   ),
