@@ -30,6 +30,11 @@ class IsarService {
     return await isar.professors.where().findAll();
   }
 
+  Future<Professor?> getProfessor(int id) async {
+    final isar = await db;
+    return await isar.professors.get(id);
+  }
+
   void deleteProfessor(int id) async {
     final isar = await db;
     await isar.writeTxn(() async {
