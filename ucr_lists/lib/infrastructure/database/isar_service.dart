@@ -29,4 +29,11 @@ class IsarService {
     final isar = await db;
     return await isar.professors.where().findAll();
   }
+
+  void deleteProfessor(int id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.professors.delete(id);
+    });
+  }
 }
