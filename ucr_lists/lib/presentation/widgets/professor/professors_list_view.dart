@@ -48,6 +48,14 @@ class _ProfessorsListViewState extends State<ProfessorsListView> {
               title:
                   '${professors[index].firstName} ${professors[index].lastName}',
               elevation: 2,
+              onPressedDelete: () {
+                context
+                    .read<ProfessorCubit>()
+                    .deleteProfessor(professors[index].id!)
+                    .then((value) => Future.delayed(
+                        const Duration(milliseconds: 250),
+                        () => context.read<ProfessorCubit>().getProfessors()));
+              },
             );
           },
         ),
