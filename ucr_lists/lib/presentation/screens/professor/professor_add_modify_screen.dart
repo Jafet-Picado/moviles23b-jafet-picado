@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ucr_lists/domain/schemas.dart';
+import 'package:ucr_lists/presentation/blocs.dart';
 import 'package:ucr_lists/presentation/widgets.dart';
 
 class ProfessorAddModifyScreen extends StatelessWidget {
   const ProfessorAddModifyScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (context) => ProfessorCubit())],
+      child: const _ProfessorAddModifyScreen(),
+    );
+  }
+}
+
+class _ProfessorAddModifyScreen extends StatelessWidget {
+  const _ProfessorAddModifyScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +59,11 @@ class _ProfessorFormViewState extends State<_ProfessorFormView> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     super.dispose();
+  }
+
+  void _clearForm() {
+    _firstNameController.clear();
+    _lastNameController.clear();
   }
 
   String? _validate(String? value) {
@@ -97,8 +118,12 @@ class _ProfessorFormViewState extends State<_ProfessorFormView> {
                   onPressed: () {
                     bool isValid = _keyForm.currentState!.validate();
                     if (isValid) {
-                      print(
-                          '${_firstNameController.text} ${_lastNameController.text}');
+                      Professor professor = Professor()
+                        ..firstName = _firstNameController.text
+                        ..lastName = _lastNameController.text;
+                      context.read<ProfessorCubit>().addProfessor(professor);
+                      _clearForm();
+                      context.pop();
                     }
                   },
                   child: const Padding(
