@@ -18,4 +18,8 @@ class ProfessorCubit extends Cubit<ProfessorState> {
     List<Professor> professors = await isarService.getProfessors();
     emit(state.copyWith(professors: professors));
   }
+
+  Future<void> deleteProfessor(int id) async {
+    isarService.deleteProfessor(id);
+  }
 }
