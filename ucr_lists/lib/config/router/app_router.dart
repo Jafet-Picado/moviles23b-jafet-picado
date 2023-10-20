@@ -14,4 +14,12 @@ final appRouter = GoRouter(initialLocation: '/', routes: [
           id: id,
         );
       }),
+  GoRoute(
+      path: '/professor/:id',
+      builder: (context, state) {
+        int id = int.parse(state.pathParameters['id']!);
+        return ProfessorDetailsScreen(
+          id: id,
+        );
+      }),
 ]);
