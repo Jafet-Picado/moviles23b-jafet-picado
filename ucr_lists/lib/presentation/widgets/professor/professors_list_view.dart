@@ -56,6 +56,11 @@ class _ProfessorsListViewState extends State<ProfessorsListView> {
                         const Duration(milliseconds: 250),
                         () => context.read<ProfessorCubit>().getProfessors()));
               },
+              onPressedEdit: () {
+                context.push('/modify-professor/${professors[index].id!}').then(
+                    (value) => Future.delayed(const Duration(milliseconds: 250),
+                        () => context.read<ProfessorCubit>().getProfessors()));
+              },
             );
           },
         ),
