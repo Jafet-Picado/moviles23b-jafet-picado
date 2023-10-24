@@ -23,10 +23,13 @@ class CustomCard extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
         child: Row(
           children: [
-            Text(
-              title ?? '',
-              style: const TextStyle(
-                fontSize: 15,
+            SizedBox(
+              width: (MediaQuery.of(context).size.width - 30) / 2,
+              child: Text(
+                title ?? '',
+                style: const TextStyle(
+                  fontSize: 15,
+                ),
               ),
             ),
             const Expanded(child: SizedBox()),
