@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ucr_lists/domain/schemas.dart';
 import 'package:ucr_lists/presentation/blocs.dart';
 
 class ProfessorDetailsScreen extends StatelessWidget {
@@ -11,9 +12,8 @@ class ProfessorDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) => ProfessorCubit(),
-          ),
+          BlocProvider(create: (context) => ProfessorCubit()),
+          BlocProvider(create: (context) => CourseCubit()),
         ],
         child: _ProfessorDetailsView(
           id: id,
@@ -41,6 +41,7 @@ class _ProfessorDetailsViewState extends State<_ProfessorDetailsView> {
   Widget build(BuildContext context) {
     final String firstName = context.watch<ProfessorCubit>().state.firstName;
     final String lastName = context.watch<ProfessorCubit>().state.lastName;
+    final List<Course> courses = context.watch<ProfessorCubit>().state.courses;
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -59,6 +60,19 @@ class _ProfessorDetailsViewState extends State<_ProfessorDetailsView> {
                   style: TextStyle(fontSize: 22, color: colors.primary),
                 )
               ],
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: courses.length,
+              itemBuilder: (context, index) => ListTile(
+                leading: const Icon(Icons.calendar_today_rounded),
+                title: Text('${courses[index].name}'),
+                subtitle: Text('${courses[index].code}'),
+              ),
             ),
           ),
         ],
