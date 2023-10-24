@@ -68,6 +68,9 @@ class _ProfessorsListViewState extends State<ProfessorsListView> {
           },
         ),
       ),
+      const SizedBox(
+        height: 15,
+      ),
       FilledButton.icon(
           onPressed: () {
             context.push('/add-professor').then((_) => Future.delayed(
