@@ -14,7 +14,10 @@ class CourseAddModifyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => ProfessorCubit())],
+      providers: [
+        BlocProvider(create: (context) => ProfessorCubit()),
+        BlocProvider(create: (context) => CourseCubit())
+      ],
       child: _CourseAddModifyScreen(
         id: id,
       ),
@@ -38,17 +41,20 @@ class _CourseAddModifyScreenState extends State<_CourseAddModifyScreen> {
   void initState() {
     super.initState();
     if (widget.id != null) {
-      //context.read<CourseCubit>().getCourse(widget.id!);
+      context.read<CourseCubit>().getCourse(widget.id!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //final code = context.watch<CourseCubit>().state.code;
-    //final name = context.watch<CourseCubit>().state.name;
+    final code = context.watch<CourseCubit>().state.code;
+    final name = context.watch<CourseCubit>().state.name;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Agregar curso')),
+      appBar: AppBar(
+          title: (widget.id == null)
+              ? const Text('Agregar curso')
+              : Text('$code $name')),
       body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
@@ -103,12 +109,15 @@ class _CourseFormViewState extends State<_CourseFormView> {
     _professorController.clear();
   }
 
-  String? _validate(String? value) {
+  String? _validateName(String? value) {
     if (value == null) {
       return 'No puede ser vacío';
     }
     if (value.trim().isEmpty) {
       return 'No puede ser vacío';
+    }
+    if (value.trim().length < 5) {
+      return 'Debe tener más de 5 carácteres';
     }
     return null;
   }
@@ -149,12 +158,11 @@ class _CourseFormViewState extends State<_CourseFormView> {
               '${professors[index].firstName} ${professors[index].lastName}'));
     }
 
-    //final courseCubit = context.watch<CourseCubit>();
-    //if (widget.id != null) {
-    //_nameController.text =
-    //context.read<CourseCubit>().state.name;
-    //_codeController.text = context.read<CourseCubit>().state.code;
-    //}
+    final courseCubit = context.watch<CourseCubit>();
+    if (widget.id != null) {
+      _nameController.text = context.read<CourseCubit>().state.name;
+      _codeController.text = context.read<CourseCubit>().state.code;
+    }
 
     return Form(
         key: _keyForm,
@@ -178,9 +186,9 @@ class _CourseFormViewState extends State<_CourseFormView> {
               label: 'Nombre',
               hintText: 'Agregue el nombre del curso',
               icon: Icons.calendar_today_rounded,
-              validator: _validate,
+              validator: _validateName,
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp('[A-Za-z]')),
+                FilteringTextInputFormatter.allow(RegExp('[A-Za-zÁ-Úá-ú\\s]')),
               ],
             ),
             const SizedBox(
@@ -224,9 +232,10 @@ class _CourseFormViewState extends State<_CourseFormView> {
                     if (isValid) {
                       Course course = Course()
                         ..name = _nameController.text
-                        ..code = _codeController.text;
+                        ..code = _codeController.text
+                        ..professor.value = professors[professorSelected!];
                       if (widget.id != null) course.id = widget.id;
-                      //courseCubit.addCourse(course);
+                      courseCubit.addCourse(course);
                       _clearForm();
                       context.pop();
                     }
