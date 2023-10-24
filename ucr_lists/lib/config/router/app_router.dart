@@ -25,4 +25,20 @@ final appRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(
       path: '/add-course',
       builder: (context, state) => const CourseAddModifyScreen()),
+  GoRoute(
+      path: '/modify-course/:id',
+      builder: (context, state) {
+        int id = int.parse(state.pathParameters['id']!);
+        return CourseAddModifyScreen(
+          id: id,
+        );
+      }),
+  GoRoute(
+      path: '/course/:id',
+      builder: (context, state) {
+        int id = int.parse(state.pathParameters['id']!);
+        return ProfessorDetailsScreen(
+          id: id,
+        );
+      }),
 ]);
