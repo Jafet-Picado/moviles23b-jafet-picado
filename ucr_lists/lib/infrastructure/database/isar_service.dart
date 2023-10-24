@@ -41,4 +41,29 @@ class IsarService {
       await isar.professors.delete(id);
     });
   }
+
+  void addCourse(Course course) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.courses.put(course);
+      await course.professor.save();
+    });
+  }
+
+  Future<List<Course>> getCourses() async {
+    final isar = await db;
+    return await isar.courses.where().findAll();
+  }
+
+  Future<Course?> getCourse(int id) async {
+    final isar = await db;
+    return await isar.courses.get(id);
+  }
+
+  void deleteCourse(int id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.courses.delete(id);
+    });
+  }
 }
