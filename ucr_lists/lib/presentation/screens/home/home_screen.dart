@@ -36,9 +36,7 @@ class _HomeScreenState extends State<_HomeScreen> {
       body: PageView(
         controller: _pageController,
         children: const [
-          Center(
-            child: Text('Cursos'),
-          ),
+          CourseListView(),
           ProfessorsListView(),
           Center(
             child: Text('Estudiantes'),
