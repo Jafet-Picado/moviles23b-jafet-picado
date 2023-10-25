@@ -162,6 +162,10 @@ class _CourseFormViewState extends State<_CourseFormView> {
     if (widget.id != null) {
       _nameController.text = context.read<CourseCubit>().state.name;
       _codeController.text = context.read<CourseCubit>().state.code;
+      if (context.read<CourseCubit>().state.professor != null) {
+        professorSelected = professors.indexWhere((professor) =>
+            professor.id == context.read<CourseCubit>().state.professor!.id);
+      }
     }
 
     return Form(
@@ -199,6 +203,7 @@ class _CourseFormViewState extends State<_CourseFormView> {
                 Expanded(
                     child: DropdownMenu<int>(
                   controller: _professorController,
+                  initialSelection: professorSelected,
                   dropdownMenuEntries: professorEntries,
                   inputDecorationTheme: InputDecorationTheme(
                     isDense: false,
@@ -213,9 +218,7 @@ class _CourseFormViewState extends State<_CourseFormView> {
                   leadingIcon: const Icon(Icons.school_rounded),
                   label: const Text('Profesores'),
                   onSelected: (value) {
-                    setState(() {
-                      professorSelected = value;
-                    });
+                    professorSelected = value;
                   },
                 )),
               ],
