@@ -37,7 +37,7 @@ final appRouter = GoRouter(initialLocation: '/', routes: [
       path: '/course/:id',
       builder: (context, state) {
         int id = int.parse(state.pathParameters['id']!);
-        return ProfessorDetailsScreen(
+        return CourseDetailsScreen(
           id: id,
         );
       }),
