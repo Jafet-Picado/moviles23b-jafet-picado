@@ -12,7 +12,7 @@ class IsarService {
   Future<Isar> openDB() async {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationDocumentsDirectory();
-      return await Isar.open([ProfessorSchema, CourseSchema],
+      return await Isar.open([ProfessorSchema, StudentSchema, CourseSchema],
           directory: dir.path);
     }
     return await Future.value(Isar.getInstance());
