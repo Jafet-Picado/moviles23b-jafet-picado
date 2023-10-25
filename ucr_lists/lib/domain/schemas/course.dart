@@ -13,4 +13,6 @@ class Course {
   String? name;
 
   final professor = IsarLink<Professor>();
+
+  final students = IsarLinks<Student>();
 }
