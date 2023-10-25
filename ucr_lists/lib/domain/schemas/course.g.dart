@@ -54,6 +54,12 @@ const CourseSchema = CollectionSchema(
       name: r'professor',
       target: r'Professor',
       single: true,
+    ),
+    r'students': LinkSchema(
+      id: 2804363969162208487,
+      name: r'students',
+      target: r'Student',
+      single: false,
     )
   },
   embeddedSchemas: {},
@@ -128,13 +134,14 @@ Id _courseGetId(Course object) {
 }
 
 List<IsarLinkBase<dynamic>> _courseGetLinks(Course object) {
-  return [object.professor];
+  return [object.professor, object.students];
 }
 
 void _courseAttach(IsarCollection<dynamic> col, Id id, Course object) {
   object.id = id;
   object.professor
       .attach(col, col.isar.collection<Professor>(), r'professor', id);
+  object.students.attach(col, col.isar.collection<Student>(), r'students', id);
 }
 
 extension CourseByIndex on IsarCollection<Course> {
@@ -702,6 +709,62 @@ extension CourseQueryLinks on QueryBuilder<Course, Course, QFilterCondition> {
   QueryBuilder<Course, Course, QAfterFilterCondition> professorIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'professor', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> students(
+      FilterQuery<Student> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'students');
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> studentsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'students', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> studentsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'students', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> studentsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'students', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> studentsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'students', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> studentsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'students', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> studentsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'students', lower, includeLower, upper, includeUpper);
     });
   }
 }
