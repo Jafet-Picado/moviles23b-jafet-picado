@@ -12,7 +12,6 @@ class CourseDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ProfessorCubit()),
         BlocProvider(create: (context) => CourseCubit()),
       ],
       child: _CourseDetailsScreen(
