@@ -16,5 +16,6 @@ class Student {
   String? firstName;
   String? lastName;
 
+  @Backlink(to: 'students')
   final courses = IsarLinks<Course>();
 }
