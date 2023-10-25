@@ -16,13 +16,22 @@ class CourseCubit extends Cubit<CourseState> {
 
   Future<void> getCourses() async {
     List<Course> courses = await isarService.getCourses();
+    for (Course course in courses) {
+      await course.professor.load();
+    }
     emit(state.copyWith(courses: courses));
   }
 
   Future<void> getCourse(int id) async {
     Course? course = await isarService.getCourse(id);
     if (course == null) return;
-    emit(state.copyWith(id: course.id, code: course.code, name: course.name));
+    await course.professor.load();
+    emit(state.copyWith(
+      id: course.id,
+      code: course.code,
+      name: course.name,
+      professor: course.professor.value,
+    ));
   }
 
   Future<void> deleteCourse(int id) async {
