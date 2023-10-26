@@ -73,11 +73,10 @@ const StudentSchema = CollectionSchema(
   },
   links: {
     r'courses': LinkSchema(
-      id: 679984234544805511,
+      id: 4981409246323567500,
       name: r'courses',
       target: r'Course',
       single: false,
-      linkName: r'students',
     )
   },
   embeddedSchemas: {},
