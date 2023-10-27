@@ -26,11 +26,13 @@ class CourseCubit extends Cubit<CourseState> {
     Course? course = await isarService.getCourse(id);
     if (course == null) return;
     await course.professor.load();
+    await course.students.load();
     emit(state.copyWith(
       id: course.id,
       code: course.code,
       name: course.name,
       professor: course.professor.value,
+      students: course.students.toList(),
     ));
   }
 
