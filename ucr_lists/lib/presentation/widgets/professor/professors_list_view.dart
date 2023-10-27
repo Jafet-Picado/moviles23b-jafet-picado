@@ -29,6 +29,7 @@ class _ProfessorsListViewState extends State<ProfessorsListView> {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Lista de profesores',
