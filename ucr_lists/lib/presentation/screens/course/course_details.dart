@@ -42,6 +42,7 @@ class _CourseDetailsScreenState extends State<_CourseDetailsScreen> {
     final String code = context.watch<CourseCubit>().state.code;
     final String name = context.watch<CourseCubit>().state.name;
     final Professor? professor = context.watch<CourseCubit>().state.professor;
+    final List<Student> students = context.watch<CourseCubit>().state.students;
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -70,7 +71,7 @@ class _CourseDetailsScreenState extends State<_CourseDetailsScreen> {
                   const SizedBox(height: 15),
                   Wrap(
                     children: [
-                      const Icon(Icons.person_2_rounded),
+                      const Icon(Icons.school_rounded),
                       const SizedBox(width: 10),
                       Text(
                         (professor != null)
@@ -89,8 +90,23 @@ class _CourseDetailsScreenState extends State<_CourseDetailsScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 15),
-          const Expanded(child: SizedBox()),
+          Expanded(
+            child: (students.isNotEmpty)
+                ? ListView.builder(
+                    itemCount: students.length,
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(
+                        '${students[index].firstName} ${students[index].lastName}',
+                        textAlign: TextAlign.center,
+                      ),
+                      subtitle: Text(
+                        '${students[index].email}',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                : const Text('Actualmente no hay estudiantes matriculados'),
+          ),
         ],
       ),
     );
