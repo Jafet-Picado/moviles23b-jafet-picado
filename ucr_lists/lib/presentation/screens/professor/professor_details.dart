@@ -48,16 +48,16 @@ class _ProfessorDetailsViewState extends State<_ProfessorDetailsView> {
       appBar: AppBar(title: Text('$firstName $lastName')),
       body: Column(
         children: [
-          const SizedBox(
-            height: 15,
-          ),
+          const SizedBox(height: 15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Lista de cursos',
                   style: TextStyle(fontSize: 22, color: colors.primary),
+                  textAlign: TextAlign.center,
                 )
               ],
             ),
@@ -66,15 +66,30 @@ class _ProfessorDetailsViewState extends State<_ProfessorDetailsView> {
             height: 15,
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: courses.length,
-              itemBuilder: (context, index) => ListTile(
-                leading: const Icon(Icons.calendar_today_rounded),
-                title: Text('${courses[index].name}'),
-                subtitle: Text('${courses[index].code}'),
-              ),
-            ),
-          ),
+              child: (courses.isNotEmpty)
+                  ? ListView.builder(
+                      itemCount: courses.length,
+                      itemBuilder: (context, index) => ListTile(
+                        title: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.calendar_today_rounded),
+                              const SizedBox(width: 5),
+                              Text(
+                                '${courses[index].name}',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                        subtitle: Text(
+                          '${courses[index].code}',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  : const Text('No es profesor de ningún curso actualmente')),
         ],
       ),
     );
