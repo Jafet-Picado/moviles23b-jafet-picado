@@ -6,6 +6,7 @@ class CourseState extends Equatable {
   final String code;
   final String name;
   final Professor? professor;
+  final List<Student> students;
 
   const CourseState({
     this.courses = const [],
@@ -13,6 +14,7 @@ class CourseState extends Equatable {
     this.code = '',
     this.name = '',
     this.professor,
+    this.students = const [],
   });
 
   CourseState copyWith({
@@ -21,6 +23,7 @@ class CourseState extends Equatable {
     String? code,
     String? name,
     Professor? professor,
+    List<Student>? students,
   }) =>
       CourseState(
         courses: courses ?? this.courses,
@@ -28,6 +31,7 @@ class CourseState extends Equatable {
         code: code ?? this.code,
         name: name ?? this.name,
         professor: professor ?? this.professor,
+        students: students ?? this.students,
       );
 
   @override
