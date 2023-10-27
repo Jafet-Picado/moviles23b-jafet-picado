@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:ucr_lists/presentation/screens.dart';
-import 'package:ucr_lists/presentation/screens/student/student_add_modify_screen.dart';
 
 final appRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
@@ -57,7 +56,7 @@ final appRouter = GoRouter(initialLocation: '/', routes: [
       path: '/student/:id',
       builder: (context, state) {
         int id = int.parse(state.pathParameters['id']!);
-        return CourseDetailsScreen(
+        return StudentDetailsScreen(
           id: id,
         );
       }),
