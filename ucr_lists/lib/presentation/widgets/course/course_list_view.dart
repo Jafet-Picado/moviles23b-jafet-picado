@@ -30,6 +30,7 @@ class _CourseListViewState extends State<CourseListView> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Lista de cursos',
