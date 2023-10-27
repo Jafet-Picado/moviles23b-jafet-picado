@@ -22,6 +22,7 @@ class StudentCubit extends Cubit<StudentState> {
   Future<void> getStudent(int id) async {
     Student? student = await isarService.getStudent(id);
     if (student == null) return;
+    await student.courses.load();
     emit(state.copyWith(
       id: student.id,
       firstName: student.firstName,
