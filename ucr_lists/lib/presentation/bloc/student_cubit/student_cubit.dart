@@ -10,8 +10,8 @@ class StudentCubit extends Cubit<StudentState> {
 
   StudentCubit() : super(const StudentState());
 
-  Future<void> addStudent(Student student) async {
-    isarService.addStudent(student);
+  Future<void> addStudent(Student student, List<Course> newCourses) async {
+    isarService.addStudent(student, newCourses);
   }
 
   Future<void> getStudents() async {

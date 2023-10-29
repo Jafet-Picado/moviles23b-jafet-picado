@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:isar/isar.dart';
 import 'package:ucr_lists/domain/schemas.dart';
 import 'package:ucr_lists/presentation/blocs.dart';
 import 'package:ucr_lists/presentation/widgets.dart';
@@ -302,10 +303,9 @@ class _StudentFormViewState extends State<_StudentFormView> {
                       ..firstName = _firstNameController.text
                       ..lastName = _lastNameController.text
                       ..carnet = _carnetController.text
-                      ..email = _emailController.text
-                      ..courses.addAll(newCourses);
+                      ..email = _emailController.text;
                     if (widget.id != null) student.id = widget.id;
-                    studentCubit.addStudent(student);
+                    studentCubit.addStudent(student, newCourses);
                     _clearForm();
                     context.pop();
                   }

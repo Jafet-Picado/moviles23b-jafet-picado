@@ -67,10 +67,13 @@ class IsarService {
     });
   }
 
-  void addStudent(Student student) async {
+  void addStudent(Student student, List<Course> newCourses) async {
     final isar = await db;
     await isar.writeTxn(() async {
       await isar.students.put(student);
+      student.courses.reset();
+      await student.courses.save();
+      student.courses.addAll(newCourses);
       await student.courses.save();
     });
   }
