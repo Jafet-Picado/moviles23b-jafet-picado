@@ -6,8 +6,9 @@ import 'package:login_firebase/presentation/screens.dart';
 final appRouter = GoRouter(
   initialLocation: '/',
   redirect: (context, state) {
-    final isAuth = context.watch<AuthCubit>().state.isAuth;
-    if (!isAuth) {
+    final isAuth = context.read<AuthCubit>().state.isAuth;
+    final isCreatingAccount = context.read<AuthCubit>().state.isCreatingAccount;
+    if (!isAuth && !isCreatingAccount) {
       return '/login';
     } else {
       return null;
@@ -20,7 +21,11 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(),
+    ),
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => RegisterScreen(),
     ),
   ],
 );
