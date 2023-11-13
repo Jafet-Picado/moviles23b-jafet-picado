@@ -27,5 +27,9 @@ final appRouter = GoRouter(
       path: '/register',
       builder: (context, state) => RegisterScreen(),
     ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => ProfileScreen(),
+    ),
   ],
 );
