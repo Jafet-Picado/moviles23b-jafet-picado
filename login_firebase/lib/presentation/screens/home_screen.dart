@@ -4,15 +4,30 @@ import 'package:go_router/go_router.dart';
 import 'package:login_firebase/presentation/blocs.dart';
 import 'package:login_firebase/presentation/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final _messageController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    context.read<PostsCubit>().getPosts('users_posts');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final authCubit = context.watch<AuthCubit>();
     final colors = Theme.of(context).colorScheme;
+
+    final authCubit = context.read<AuthCubit>();
+    final postsCubit = context.read<PostsCubit>();
+
+    final posts = context.watch<PostsCubit>().state.posts;
 
     return Scaffold(
       appBar: AppBar(
@@ -33,13 +48,18 @@ class HomeScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 25),
               Expanded(
-                child: Column(
-                  children: [
-                    CustomPost(
-                      user: authCubit.state.email,
-                      message: 'Me gusta programar en Flutter!',
-                    ),
-                  ],
+                child: ListView.builder(
+                  itemCount: posts.length,
+                  itemBuilder: (context, index) {
+                    final post = posts[index];
+                    return CustomPost(
+                      user: post['email'],
+                      message: post['message'],
+                      postId: post['id'],
+                      likes: List<String>.from(post['likes'] ?? []),
+                      collectionPath: 'users_posts',
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 25),
@@ -53,7 +73,15 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 15),
                   IconButton.filled(
-                    onPressed: () {},
+                    onPressed: () {
+                      postsCubit.addPost(
+                        'users_posts',
+                        authCubit.state.email,
+                        _messageController.text,
+                      );
+                      _messageController.clear();
+                      setState(() {});
+                    },
                     icon: const Icon(Icons.send_rounded),
                   ),
                 ],
