@@ -20,6 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<PostsCubit>().getPosts('users_posts');
   }
 
+  void onProfileTap() {
+    context.pop();
+    context.push('/profile');
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -40,6 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.logout_rounded),
           ),
         ],
+      ),
+      drawer: CustomDrawer(
+        onHomeTap: () {},
+        onProfileTap: onProfileTap,
+        onLogoutTap: () {},
       ),
       body: Center(
         child: Padding(
