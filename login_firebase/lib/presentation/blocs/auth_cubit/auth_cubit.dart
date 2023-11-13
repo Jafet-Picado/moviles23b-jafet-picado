@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -44,6 +45,18 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await GoogleAuthService().signInGoogle();
       final user = FirebaseAuth.instance.currentUser!;
+      DocumentSnapshot<Map<String, dynamic>> userData =
+          await FirestoreService().getUserData('users', user.email!);
+
+      if (!userData.exists) {
+        await FirestoreService().createUserData(
+          'users',
+          user.email!,
+          user.email!.split('@')[0],
+          'Biografía vacía...',
+        );
+        userData = await FirestoreService().getUserData('users', user.email!);
+      }
       emit(
         state.copyWith(
           isAuth: true,
@@ -73,7 +86,15 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
 
+      await FirestoreService().createUserData(
+        'users',
+        email,
+        email.split('@')[0],
+        'Biografía vacía...',
+      );
+
       final user = FirebaseAuth.instance.currentUser!;
+      final userData = await FirestoreService().getUserData('users', email);
 
       emit(
         state.copyWith(
@@ -81,6 +102,8 @@ class AuthCubit extends Cubit<AuthState> {
           isAuth: true,
           isCreatingAccount: false,
           email: user.email,
+          username: userData.data()!['username'],
+          bio: userData.data()!['bio'],
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -90,6 +113,29 @@ class AuthCubit extends Cubit<AuthState> {
           isAuth: false,
           error: true,
           errorMessage: e.code,
+        ),
+      );
+    }
+  }
+
+  Future<void> updateUserData(String email, String field, String data) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      await FirestoreService().updateUserData('users', email, field, data);
+      final userData = await FirestoreService().getUserData('users', email);
+      emit(
+        state.copyWith(
+          isLoading: false,
+          username: userData.data()!['username'],
+          bio: userData.data()!['bio'],
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: true,
+          errorMessage: e.toString(),
         ),
       );
     }
