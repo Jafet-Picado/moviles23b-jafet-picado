@@ -51,7 +51,6 @@ class EntityPlatform {
 class EntitySample {
   int height;
   String image;
-  List<String>? platforms;
   String thumbnailImage;
   int width;
   String? caption;
@@ -59,7 +58,6 @@ class EntitySample {
   EntitySample({
     required this.height,
     required this.image,
-    this.platforms,
     required this.thumbnailImage,
     required this.width,
     this.caption,
