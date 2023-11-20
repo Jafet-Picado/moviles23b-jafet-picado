@@ -37,19 +37,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pizarra de mensajes'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              authCubit.signOutUser().then((value) => context.go('/'));
-            },
-            icon: const Icon(Icons.logout_rounded),
-          ),
-        ],
       ),
       drawer: CustomDrawer(
-        onHomeTap: () {},
+        onHomeTap: () {
+          context.go('/');
+        },
         onProfileTap: onProfileTap,
-        onLogoutTap: () {},
+        onLogoutTap: () {
+          authCubit.signOutUser().then((value) => context.go('/'));
+        },
       ),
       body: Center(
         child: Padding(
