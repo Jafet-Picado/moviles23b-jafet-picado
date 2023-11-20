@@ -37,7 +37,7 @@ class CustomTextBox extends StatelessWidget {
               ),
               const Expanded(child: SizedBox()),
               IconButton(
-                onPressed: () {},
+                onPressed: onEditPressed,
                 icon: const Icon(Icons.edit_rounded),
               ),
             ],
