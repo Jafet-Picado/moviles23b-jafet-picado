@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "175360804133",
+    "project_id": "herocards-8d821",
+    "storage_bucket": "herocards-8d821.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175360804133:android:58ea86a2af6765fa6386cc",
+        "android_client_info": {
+          "package_name": "com.example.hero_cards"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJbN4Y8X6VWgDYMxrtAQSPCnRySbqEOkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
