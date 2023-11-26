@@ -21,11 +21,17 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => LoginScreen(),
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/register',
       builder: (context, state) => RegisterScreen(),
     ),
+    GoRoute(
+        path: '/hero/:id',
+        builder: (context, state) {
+          int id = int.parse(state.pathParameters['id']!);
+          return HeroInfoScreen(id: id);
+        })
   ],
 );
