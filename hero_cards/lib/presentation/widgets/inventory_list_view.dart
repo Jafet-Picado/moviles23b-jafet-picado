@@ -14,12 +14,6 @@ class InventoryListView extends StatefulWidget {
 
 class _InventoryListViewState extends State<InventoryListView> {
   @override
-  void initState() {
-    super.initState();
-    context.read<AuthCubit>().getUserCards();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final heroes = context.watch<AuthCubit>().state.heroes;
@@ -28,21 +22,9 @@ class _InventoryListViewState extends State<InventoryListView> {
             ? Column(
                 children: [
                   const SizedBox(height: 15),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Colección de cartas',
-                          style: TextStyle(fontSize: 22, color: colors.primary),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 15),
                   Expanded(
                     child: ListView.builder(
+                      scrollDirection: Axis.vertical,
                       itemCount: heroes.length,
                       itemBuilder: (context, index) {
                         return CustomListCard(
