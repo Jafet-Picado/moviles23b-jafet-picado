@@ -39,16 +39,17 @@ class AuthState extends Equatable {
     List<HeroInfo>? heroes,
   }) =>
       AuthState(
-          isAuth: isAuth ?? this.isAuth,
-          isCreatingAccount: isCreatingAccount ?? this.isCreatingAccount,
-          isLoading: isLoading ?? this.isLoading,
-          error: error ?? this.error,
-          errorMessage: errorMessage ?? this.errorMessage,
-          useFingerprint: useFingerprint ?? this.useFingerprint,
-          email: email ?? this.email,
-          username: username ?? this.username,
-          bio: bio ?? this.bio,
-          heroes: heroes ?? this.heroes);
+        isAuth: isAuth ?? this.isAuth,
+        isCreatingAccount: isCreatingAccount ?? this.isCreatingAccount,
+        isLoading: isLoading ?? this.isLoading,
+        error: error ?? this.error,
+        errorMessage: errorMessage ?? this.errorMessage,
+        useFingerprint: useFingerprint ?? this.useFingerprint,
+        email: email ?? this.email,
+        username: username ?? this.username,
+        bio: bio ?? this.bio,
+        heroes: heroes ?? this.heroes,
+      );
 
   @override
   List<Object> get props => [
