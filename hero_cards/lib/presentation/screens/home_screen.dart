@@ -13,6 +13,7 @@ class HomeScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => HeroCubit()),
+        BlocProvider(create: (context) => AuthCubit()),
       ],
       child: const _HomeScreen(),
     );
@@ -29,6 +30,12 @@ class _HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<_HomeScreen> {
   int _selectedIndex = 1;
   late final PageController _pageController = PageController(initialPage: 1);
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthCubit>().getUserCards();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +59,8 @@ class _HomeScreenState extends State<_HomeScreen> {
         controller: _pageController,
         children: const [
           BigHeroCardScreen(),
-          InventoryListView(),
-          Text('Perfil'),
+          InventoryView(),
+          Text('Jugadores'),
         ],
         onPageChanged: (value) {
           setState(() {
@@ -70,7 +77,7 @@ class _HomeScreenState extends State<_HomeScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.storage_rounded), label: 'Inventario'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_2_rounded), label: 'Jugadores'),
+              icon: Icon(Icons.people_rounded), label: 'Jugadores'),
         ],
         onTap: (value) => _pageController.jumpToPage(value),
       ),
