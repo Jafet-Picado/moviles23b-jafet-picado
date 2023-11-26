@@ -18,6 +18,7 @@ class _BigHeroCardState extends State<BigHeroCard> {
   double angle = 0;
 
   final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _tapPlayer = AudioPlayer();
   final AssetSource _audio = AssetSource('sounds/hero.mp3');
   final AssetSource _tapAudio = AssetSource('sounds/cinematic.mp3');
 
@@ -35,6 +36,7 @@ class _BigHeroCardState extends State<BigHeroCard> {
   @override
   void dispose() {
     _audioPlayer.dispose();
+    _tapPlayer.dispose();
     super.dispose();
   }
 
@@ -43,11 +45,11 @@ class _BigHeroCardState extends State<BigHeroCard> {
       setState(() {
         angle = (angle + pi) % (2 * pi);
         _audioPlayer.pause();
-        _audioPlayer
+        _tapPlayer
             .play(_tapAudio, mode: PlayerMode.mediaPlayer)
             .then((value) => Future.delayed(const Duration(seconds: 5), () {
-                  _audioPlayer.pause();
-                  _audioPlayer.play(_audio, mode: PlayerMode.mediaPlayer);
+                  _tapPlayer.pause();
+                  _audioPlayer.resume();
                 }));
       });
     }
@@ -69,6 +71,7 @@ class _BigHeroCardState extends State<BigHeroCard> {
     const colorizeTextStyle = TextStyle(
       fontSize: 35.0,
       fontFamily: 'Horizon',
+      fontWeight: FontWeight.bold,
     );
 
     return GestureDetector(
@@ -152,6 +155,7 @@ class _BigHeroCardState extends State<BigHeroCard> {
                                       style: const TextStyle(
                                         fontFamily: 'Horizon',
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       ),
                                       textAlign: TextAlign.center,
