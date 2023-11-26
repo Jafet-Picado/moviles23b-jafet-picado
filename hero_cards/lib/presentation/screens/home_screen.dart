@@ -13,7 +13,6 @@ class HomeScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => HeroCubit()),
-        BlocProvider(create: (context) => AuthCubit()),
       ],
       child: const _HomeScreen(),
     );
@@ -47,7 +46,9 @@ class _HomeScreenState extends State<_HomeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                authCubit.signOutUser().then((value) => context.go('/'));
+                authCubit.signOutUser().then((value) {
+                  context.go('/');
+                });
               },
               icon: Icon(
                 Icons.logout_rounded,
