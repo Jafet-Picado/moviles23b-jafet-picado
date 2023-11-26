@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hero_cards/domain/entities/hero_info.dart';
 import 'package:hero_cards/presentation/blocs.dart';
+import 'package:hero_cards/presentation/screens.dart';
+import 'package:hero_cards/presentation/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -29,28 +30,10 @@ class _HomeScreenState extends State<_HomeScreen> {
   int _selectedIndex = 1;
   late final PageController _pageController = PageController(initialPage: 1);
 
-  void onStoreTap() {
-    context.pop();
-    context.go('/store');
-  }
-
-  void onInventoryTap() {
-    context.pop();
-    context.go('/inventory');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<HeroCubit>().getHeroById(id: 1);
-  }
-
   @override
   Widget build(BuildContext context) {
     final authCubit = context.read<AuthCubit>();
-    final heroCubit = context.read<HeroCubit>();
     final colors = Theme.of(context).colorScheme;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hero Cards'),
@@ -68,8 +51,8 @@ class _HomeScreenState extends State<_HomeScreen> {
       body: PageView(
         controller: _pageController,
         children: const [
-          Text('Tienda'),
-          Text('Inventario'),
+          BigHeroCardScreen(),
+          InventoryListView(),
           Text('Perfil'),
         ],
         onPageChanged: (value) {
