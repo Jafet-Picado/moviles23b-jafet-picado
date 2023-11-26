@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hero_cards/domain/entities/hero_info.dart';
+import 'package:hero_cards/infrastructure/datasources/superhero_datasource.dart';
+import 'package:hero_cards/infrastructure/repositories/hero_repository.dart';
 import 'package:hero_cards/infrastructure/services.dart';
 
 part 'auth_state.dart';
@@ -119,5 +121,30 @@ class AuthCubit extends Cubit<AuthState> {
 
   void reset() {
     emit(const AuthState());
+  }
+
+  Future<void> getUserCards() async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final user = FirebaseAuth.instance.currentUser!;
+      final userData =
+          await FirestoreService().getUserData('users', user.email!);
+      HeroRepositoryImpl repo =
+          HeroRepositoryImpl(datasource: SuperheroDatasource());
+      List<HeroInfo> heroesList = [];
+      for (int id in userData.data()!['cards']) {
+        await repo.getHero(id: id).then((value) => heroesList.add(value));
+      }
+
+      emit(state.copyWith(
+        isLoading: false,
+        heroes: heroesList,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: true,
+        errorMessage: e.toString(),
+      ));
+    }
   }
 }
