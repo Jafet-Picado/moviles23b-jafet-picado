@@ -28,4 +28,26 @@ class HeroCubit extends Cubit<HeroState> {
       ));
     }
   }
+
+  Future<void> getHeroesByList({required List<int> heroes}) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      HeroRepositoryImpl repo =
+          HeroRepositoryImpl(datasource: SuperheroDatasource());
+      List<HeroInfo> heroesList = [];
+      for (int id in heroes) {
+        await repo.getHero(id: id).then((value) => heroesList.add(value));
+      }
+
+      emit(state.copyWith(
+        isLoading: false,
+        heroes: heroesList,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: true,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
 }
