@@ -35,6 +35,8 @@ class CustomListCard extends StatelessWidget {
                 title ?? '',
                 style: const TextStyle(
                   fontSize: 15,
+                  fontFamily: 'Horizon',
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
