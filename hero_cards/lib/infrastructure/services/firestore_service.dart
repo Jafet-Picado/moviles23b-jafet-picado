@@ -6,6 +6,7 @@ class FirestoreService {
     await FirebaseFirestore.instance.collection(collectionPath).doc(email).set({
       'username': username,
       'bio': bio,
+      'cards': [],
     });
   }
 
@@ -15,6 +16,14 @@ class FirestoreService {
         .collection(collectionPath)
         .doc(email)
         .update({field: data});
+  }
+
+  void addUserCard(String collectionPath, String email, int id) {
+    DocumentReference reference =
+        FirebaseFirestore.instance.collection(collectionPath).doc(email);
+    reference.update({
+      'cards': FieldValue.arrayUnion([id])
+    });
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserData(
