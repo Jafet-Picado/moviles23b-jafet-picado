@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class CustomGridCard extends StatelessWidget {
   final double? elevation;
@@ -26,18 +27,37 @@ class CustomGridCard extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
             (image != null)
-                ? ClipOval(
-                    child: SizedBox.fromSize(
-                      size: const Size.fromRadius(40),
-                      child: Image.network(
-                        image!,
-                        fit: BoxFit.fill,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/images/noimagen.jpg',
-                            fit: BoxFit.fill,
-                          );
-                        },
+                ? GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop(this);
+                              },
+                              child: PhotoView(
+                                imageProvider: Image.network(
+                                  image!,
+                                ).image,
+                              ),
+                            );
+                          });
+                    },
+                    child: ClipOval(
+                      child: SizedBox.fromSize(
+                        size: const Size.fromRadius(40),
+                        child: Image.network(
+                          image!,
+                          fit: BoxFit.fill,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/noimagen.jpg',
+                              fit: BoxFit.fill,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   )
