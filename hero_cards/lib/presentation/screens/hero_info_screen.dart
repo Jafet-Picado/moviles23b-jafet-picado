@@ -35,12 +35,12 @@ class _HeroInfoScreenState extends State<_HeroInfoScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<HeroCubit>().getHeroById(id: widget.id);
+    context.read<HeroCubit>().getHeroDetailedById(id: widget.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    HeroCubit heroCubit = context.read<HeroCubit>();
+    final hero = context.read<HeroCubit>().state.heroDetailed;
     final colors = Theme.of(context).colorScheme;
     return (!context.watch<HeroCubit>().state.isLoading)
         ? Scaffold(
@@ -48,11 +48,29 @@ class _HeroInfoScreenState extends State<_HeroInfoScreen> {
               title: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Text(
-                  heroCubit.state.hero!.name,
+                  hero!.name,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                     fontFamily: 'Horizon',
+                  ),
+                ),
+              ),
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primaryContainer,
+                    padding: const EdgeInsets.only(left: 1),
+                  ),
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
                 ),
               ),
@@ -63,10 +81,11 @@ class _HeroInfoScreenState extends State<_HeroInfoScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 10),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
-                        heroCubit.state.hero!.image.url,
+                        hero.image.mediumUrl,
                         fit: BoxFit.cover,
                       ),
                     ),
