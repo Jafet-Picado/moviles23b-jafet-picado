@@ -4,10 +4,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hero_cards/presentation/blocs.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class BigHeroCard extends StatefulWidget {
-  final int id;
-  const BigHeroCard({super.key, required this.id});
+  const BigHeroCard({super.key});
 
   @override
   State<BigHeroCard> createState() => _BigHeroCardState();
@@ -17,7 +17,8 @@ class _BigHeroCardState extends State<BigHeroCard> {
   bool isBack = true;
   double angle = 0;
 
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer()
+    ..setReleaseMode(ReleaseMode.loop);
   final AudioPlayer _tapPlayer = AudioPlayer();
   final AssetSource _audio = AssetSource('sounds/hero.mp3');
   final AssetSource _tapAudio = AssetSource('sounds/cinematic.mp3');
@@ -25,7 +26,7 @@ class _BigHeroCardState extends State<BigHeroCard> {
   @override
   void initState() {
     super.initState();
-    context.read<HeroCubit>().getHeroById(id: widget.id);
+    context.read<HeroCubit>().getHeroMinimalRandom();
     _initPlayer();
   }
 
@@ -57,15 +58,13 @@ class _BigHeroCardState extends State<BigHeroCard> {
 
   @override
   Widget build(BuildContext context) {
-    final heroCubit = context.read<HeroCubit>();
+    final hero = context.read<HeroCubit>().state.heroMinimal;
+    final colors = Theme.of(context).colorScheme;
 
     const colorizeColors = [
-      Colors.black,
+      Colors.white,
       Colors.purple,
       Colors.blue,
-      Colors.red,
-      Colors.green,
-      Colors.pink,
     ];
 
     const colorizeTextStyle = TextStyle(
@@ -74,102 +73,114 @@ class _BigHeroCardState extends State<BigHeroCard> {
       fontWeight: FontWeight.bold,
     );
 
-    return GestureDetector(
-      onTap: _flip,
-      child: TweenAnimationBuilder(
-        tween: Tween<double>(begin: 0, end: angle),
-        duration: const Duration(seconds: 1),
-        builder: (context, double val, __) {
-          if (val >= (pi / 2)) {
-            isBack = false;
-          } else {
-            isBack = true;
-          }
-          return Transform(
-            alignment: Alignment.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.001)
-              ..rotateY(val),
-            child: SizedBox(
-              width: 309,
-              height: 474,
-              child: isBack
-                  ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        image: const DecorationImage(
-                          image: AssetImage('assets/images/back.png'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    )
-                  : Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()..rotateY(pi),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          image: const DecorationImage(
-                            image: AssetImage('assets/images/face.png'),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              ClipOval(
-                                child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(130),
-                                  child: Image.network(
-                                    heroCubit.state.hero!.image.url,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
-                                        'assets/images/noimagen.jpg',
-                                        fit: BoxFit.cover,
-                                      );
-                                    },
-                                  ),
+    return (!context.watch<HeroCubit>().state.isLoading)
+        ? GestureDetector(
+            onTap: _flip,
+            child: TweenAnimationBuilder(
+              tween: Tween<double>(begin: 0, end: angle),
+              duration: const Duration(seconds: 1),
+              builder: (context, double val, __) {
+                if (val >= (pi / 2)) {
+                  isBack = false;
+                } else {
+                  isBack = true;
+                }
+                return Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.001)
+                    ..rotateY(val),
+                  child: SizedBox(
+                    width: 309,
+                    height: 474,
+                    child: isBack
+                        ? Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              image: const DecorationImage(
+                                image: AssetImage('assets/images/back.png'),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          )
+                        : Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.identity()..rotateY(pi),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                image: const DecorationImage(
+                                  image: AssetImage('assets/images/face.png'),
                                 ),
                               ),
-                              const SizedBox(height: 20),
-                              Flexible(
-                                child: AnimatedTextKit(
-                                  animatedTexts: [
-                                    ColorizeAnimatedText(
-                                      heroCubit.state.hero!.name,
-                                      textStyle: colorizeTextStyle,
-                                      colors: colorizeColors,
-                                      textAlign: TextAlign.center,
-                                      speed: const Duration(seconds: 1),
-                                    ),
-                                  ],
-                                  repeatForever: true,
-                                ),
-                              ),
-                              (heroCubit.state.hero!.biography.publisher !=
-                                      'null')
-                                  ? Text(
-                                      heroCubit.state.hero!.biography.publisher,
-                                      style: const TextStyle(
-                                        fontFamily: 'Horizon',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                              child: Padding(
+                                padding: const EdgeInsets.all(30),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ClipOval(
+                                      child: SizedBox.fromSize(
+                                        size: const Size.fromRadius(110),
+                                        child: Image.network(
+                                          hero!.image.smallUrl,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/noimagen.jpg',
+                                              fit: BoxFit.fill,
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  : const SizedBox(),
-                            ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Flexible(
+                                      child: AnimatedTextKit(
+                                        animatedTexts: [
+                                          ColorizeAnimatedText(
+                                            (hero.name == '')
+                                                ? 'Desconocido'
+                                                : hero.name,
+                                            textStyle: colorizeTextStyle,
+                                            colors: colorizeColors,
+                                            textAlign: TextAlign.center,
+                                            speed: const Duration(
+                                                milliseconds: 500),
+                                          ),
+                                        ],
+                                        repeatForever: true,
+                                      ),
+                                    ),
+                                    ('xd' != 'null')
+                                        ? Text(
+                                            (hero.publisher == '')
+                                                ? 'Desconocido'
+                                                : hero.publisher,
+                                            style: const TextStyle(
+                                              fontFamily: 'Horizon',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : const SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        : Center(
+            child: LoadingAnimationWidget.fourRotatingDots(
+              color: colors.primary,
+              size: 100,
             ),
           );
-        },
-      ),
-    );
   }
 }
