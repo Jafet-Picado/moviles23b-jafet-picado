@@ -16,7 +16,7 @@ class _InventoryListViewState extends State<InventoryListView> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final heroes = context.watch<AuthCubit>().state.heroes;
+    final heroes = context.watch<AuthCubit>().state.heroesMinimal;
     return (!context.watch<AuthCubit>().state.isLoading)
         ? (heroes.isNotEmpty)
             ? Column(
@@ -33,7 +33,7 @@ class _InventoryListViewState extends State<InventoryListView> {
                           onPressedView: () {
                             context.push('/hero/${heroes[index].id}');
                           },
-                          image: heroes[index].image.url,
+                          image: heroes[index].image.smallUrl,
                         );
                       },
                     ),
