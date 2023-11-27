@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hero_cards/presentation/blocs/hero_cubit/hero_cubit.dart';
+import 'package:hero_cards/presentation/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -57,23 +58,11 @@ class _HeroInfoScreenState extends State<_HeroInfoScreen> {
                   ),
                 ),
               ),
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primaryContainer,
-                    padding: const EdgeInsets.only(left: 1),
-                  ),
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-                ),
+              leading: CustomElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icons.arrow_back_rounded,
               ),
             ),
             body: Padding(
