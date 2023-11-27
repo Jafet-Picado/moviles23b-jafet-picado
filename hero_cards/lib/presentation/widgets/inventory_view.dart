@@ -20,7 +20,7 @@ class _InventoryViewState extends State<InventoryView> {
   ];
 
   void _loadCards() {
-    context.read<AuthCubit>().getUserCards();
+    context.read<AuthCubit>().getHeroesMinimalByList();
   }
 
   @override
