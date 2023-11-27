@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hero_cards/presentation/blocs/hero_cubit/hero_cubit.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:photo_view/photo_view.dart';
 
 class HeroInfoScreen extends StatelessWidget {
   final int id;
@@ -82,11 +83,30 @@ class _HeroInfoScreenState extends State<_HeroInfoScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 10),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        hero.image.mediumUrl,
-                        fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop(this);
+                                },
+                                child: PhotoView(
+                                  imageProvider: Image.network(
+                                    hero.image.mediumUrl,
+                                  ).image,
+                                ),
+                              );
+                            });
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          hero.image.mediumUrl,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ],
