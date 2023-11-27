@@ -16,6 +16,8 @@ class CustomListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Card(
       elevation: elevation,
       child: Padding(
@@ -23,9 +25,20 @@ class CustomListCard extends StatelessWidget {
         child: Row(
           children: [
             (image != null)
-                ? CircleAvatar(
-                    backgroundImage: NetworkImage(image!),
-                    radius: 40,
+                ? ClipOval(
+                    child: SizedBox.fromSize(
+                      size: const Size.fromRadius(40),
+                      child: Image.network(
+                        image!,
+                        fit: BoxFit.fill,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/noimagen.jpg',
+                            fit: BoxFit.fill,
+                          );
+                        },
+                      ),
+                    ),
                   )
                 : const SizedBox(),
             const SizedBox(width: 10),
@@ -41,12 +54,18 @@ class CustomListCard extends StatelessWidget {
               ),
             ),
             const Expanded(child: SizedBox()),
-            IconButton.filled(
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: colors.primaryContainer,
+              child: IconButton(
                 onPressed: onPressedView,
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 20,
-                )),
+                  color: colors.onBackground,
+                ),
+              ),
+            ),
           ],
         ),
       ),
