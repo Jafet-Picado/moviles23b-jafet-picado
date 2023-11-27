@@ -67,6 +67,7 @@ class AuthCubit extends Cubit<AuthState> {
           email: user.email,
           username: userData.data()!['username'],
           bio: userData.data()!['bio'],
+          balance: userData.data()!['balance'],
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -176,14 +177,19 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> increaseBalance({required int increase}) async {
+  Future<void> updateBalance({required int amount}) async {
     try {
       emit(state.copyWith(isLoading: true));
       final user = FirebaseAuth.instance.currentUser!;
       final userData =
           await FirestoreService().getUserData('users', user.email!);
       int currenteBalance = userData.data()!['balance'];
-      int newBalance = currenteBalance + increase;
+      int newBalance = currenteBalance + amount;
+      await FirestoreService().updateUserBalance(
+        'users',
+        user.email!,
+        newBalance,
+      );
       emit(
         state.copyWith(
           isLoading: false,
