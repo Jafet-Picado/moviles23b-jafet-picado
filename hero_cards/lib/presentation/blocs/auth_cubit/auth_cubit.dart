@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hero_cards/domain/entities/hero_info.dart';
+import 'package:hero_cards/domain/entities/hero_info_minimal.dart';
 import 'package:hero_cards/infrastructure/datasources/superhero_datasource.dart';
 import 'package:hero_cards/infrastructure/repositories/hero_repository.dart';
 import 'package:hero_cards/infrastructure/services.dart';
@@ -139,6 +140,33 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(
         isLoading: false,
         heroes: heroesList,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: true,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
+
+  Future<void> getHeroesMinimalByList() async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final user = FirebaseAuth.instance.currentUser!;
+      final userData =
+          await FirestoreService().getUserData('users', user.email!);
+      HeroRepositoryImpl repo =
+          HeroRepositoryImpl(datasource: SuperheroDatasource());
+      List<HeroInfoMinimal> heroesList = [];
+      for (int id in userData.data()!['cards']) {
+        await repo
+            .getHeroMinimal(id: id)
+            .then((value) => heroesList.add(value));
+      }
+
+      emit(state.copyWith(
+        isLoading: false,
+        heroesMinimal: heroesList,
       ));
     } catch (e) {
       emit(state.copyWith(
