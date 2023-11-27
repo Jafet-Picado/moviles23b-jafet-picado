@@ -28,10 +28,15 @@ final appRouter = GoRouter(
       builder: (context, state) => RegisterScreen(),
     ),
     GoRoute(
-        path: '/hero/:id',
-        builder: (context, state) {
-          int id = int.parse(state.pathParameters['id']!);
-          return HeroInfoScreen(id: id);
-        })
+      path: '/hero/:id',
+      builder: (context, state) {
+        int id = int.parse(state.pathParameters['id']!);
+        return HeroInfoScreen(id: id);
+      },
+    ),
+    GoRoute(
+      path: '/balance_store',
+      builder: (context, state) => const BalanceStoreScreen(),
+    ),
   ],
 );
