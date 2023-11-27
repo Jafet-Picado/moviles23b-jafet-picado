@@ -6,6 +6,10 @@ class HeroState extends Equatable {
   final String errorMessage;
   final List<HeroInfo> heroes;
   final HeroInfo? hero;
+  final HeroInfoMinimal? heroMinimal;
+  final HeroInfoDetailed? heroDetailed;
+  final List<HeroInfoMinimal> heroesMinimal;
+  final List<HeroInfoDetailed> heroesDetailed;
 
   const HeroState({
     this.isLoading = false,
@@ -13,6 +17,10 @@ class HeroState extends Equatable {
     this.errorMessage = '',
     this.heroes = const [],
     this.hero,
+    this.heroMinimal,
+    this.heroDetailed,
+    this.heroesMinimal = const [],
+    this.heroesDetailed = const [],
   });
 
   HeroState copyWith({
@@ -21,6 +29,10 @@ class HeroState extends Equatable {
     String? errorMessage,
     List<HeroInfo>? heroes,
     HeroInfo? hero,
+    HeroInfoMinimal? heroMinimal,
+    HeroInfoDetailed? heroDetailed,
+    List<HeroInfoMinimal>? heroesMinimal,
+    List<HeroInfoDetailed>? heroesDetailed,
   }) =>
       HeroState(
         isLoading: isLoading ?? this.isLoading,
@@ -28,6 +40,10 @@ class HeroState extends Equatable {
         errorMessage: errorMessage ?? this.errorMessage,
         heroes: heroes ?? this.heroes,
         hero: hero ?? this.hero,
+        heroMinimal: heroMinimal ?? this.heroMinimal,
+        heroDetailed: heroDetailed ?? this.heroDetailed,
+        heroesMinimal: heroesMinimal ?? this.heroesMinimal,
+        heroesDetailed: heroesDetailed ?? this.heroesDetailed,
       );
 
   @override
@@ -36,5 +52,7 @@ class HeroState extends Equatable {
         error,
         errorMessage,
         heroes,
+        heroesMinimal,
+        heroesDetailed,
       ];
 }
