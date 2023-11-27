@@ -45,8 +45,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         title: const Text('Hero Cards'),
         actions: [
           CustomPillButton(
-            balance:
-                '1000', //context.watch<AuthCubit>().state.balance.toString(),
+            balance: context.watch<AuthCubit>().state.balance.toString(),
             onTap: () {
               context.push('/balance_store');
             },
