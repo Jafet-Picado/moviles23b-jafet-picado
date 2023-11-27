@@ -16,7 +16,7 @@ class _InventoryGridViewState extends State<InventoryGridView> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final heroes = context.watch<AuthCubit>().state.heroes;
+    final heroes = context.watch<AuthCubit>().state.heroesMinimal;
 
     return (!context.watch<AuthCubit>().state.isLoading)
         ? (heroes.isNotEmpty)
@@ -27,19 +27,20 @@ class _InventoryGridViewState extends State<InventoryGridView> {
                     child: GridView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
+                        childAspectRatio: MediaQuery.of(context).size.width /
+                            (MediaQuery.of(context).size.height / 1.6),
                       ),
                       itemCount: heroes.length,
                       itemBuilder: (context, index) {
                         return CustomGridCard(
                           title: heroes[index].name,
-                          elevation: 2,
+                          elevation: 5,
                           onPressedView: () {
                             context.push('/hero/${heroes[index].id}');
                           },
-                          image: heroes[index].image.url,
+                          image: heroes[index].image.smallUrl,
                         );
                       },
                     ),
