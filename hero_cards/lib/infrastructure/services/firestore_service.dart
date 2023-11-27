@@ -7,6 +7,7 @@ class FirestoreService {
       'username': username,
       'bio': bio,
       'cards': [],
+      'balance': 1000,
     });
   }
 

@@ -175,4 +175,26 @@ class AuthCubit extends Cubit<AuthState> {
       ));
     }
   }
+
+  Future<void> increaseBalance({required int increase}) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final user = FirebaseAuth.instance.currentUser!;
+      final userData =
+          await FirestoreService().getUserData('users', user.email!);
+      int currenteBalance = userData.data()!['balance'];
+      int newBalance = currenteBalance + increase;
+      emit(
+        state.copyWith(
+          isLoading: false,
+          balance: newBalance,
+        ),
+      );
+    } catch (e) {
+      emit(state.copyWith(
+        error: true,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
 }
