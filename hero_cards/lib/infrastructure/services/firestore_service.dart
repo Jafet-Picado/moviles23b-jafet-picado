@@ -35,6 +35,16 @@ class FirestoreService {
         .get();
   }
 
+  Future<void> updateUserBalance(
+      String collectionPath, String email, int balance) async {
+    await FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(email)
+        .update({
+      'balance': balance,
+    });
+  }
+
   void clear() async {
     await FirebaseFirestore.instance.terminate();
     await FirebaseFirestore.instance.clearPersistence();
