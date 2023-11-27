@@ -33,7 +33,7 @@ class _HomeScreenState extends State<_HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<AuthCubit>().getUserCards();
+    context.read<AuthCubit>().getHeroesMinimalByList();
   }
 
   @override
