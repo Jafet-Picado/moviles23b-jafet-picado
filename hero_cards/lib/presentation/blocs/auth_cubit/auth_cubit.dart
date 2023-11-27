@@ -20,11 +20,14 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
       final user = FirebaseAuth.instance.currentUser!;
+      final userData =
+          await FirestoreService().getUserData('users', user.email!);
       emit(
         state.copyWith(
           isAuth: true,
           isLoading: false,
           email: user.email,
+          balance: userData.data()!['balance'],
         ),
       );
     } on FirebaseAuthException catch (e) {
