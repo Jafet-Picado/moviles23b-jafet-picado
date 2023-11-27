@@ -123,7 +123,7 @@ class _BigHeroCardState extends State<BigHeroCard> {
                                         size: const Size.fromRadius(110),
                                         child: Image.network(
                                           hero!.image.smallUrl,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.fill,
                                           errorBuilder:
                                               (context, error, stackTrace) {
                                             return Image.asset(
