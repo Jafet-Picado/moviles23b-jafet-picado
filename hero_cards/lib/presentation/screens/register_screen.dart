@@ -66,7 +66,7 @@ class RegisterScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 25),
                   Icon(
-                    Icons.android_rounded,
+                    Icons.account_circle_sharp,
                     color: colors.primary,
                     size: 50,
                   ),
