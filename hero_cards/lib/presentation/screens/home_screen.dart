@@ -44,16 +44,21 @@ class _HomeScreenState extends State<_HomeScreen> {
       appBar: AppBar(
         title: const Text('Hero Cards'),
         actions: [
-          IconButton(
-              onPressed: () {
-                authCubit.signOutUser().then((value) {
-                  context.go('/');
-                });
-              },
-              icon: Icon(
-                Icons.logout_rounded,
-                color: colors.onBackground,
-              ))
+          CustomPillButton(
+            balance:
+                '1000', //context.watch<AuthCubit>().state.balance.toString(),
+            onTap: () {
+              context.push('/balance_store');
+            },
+          ),
+          CustomElevatedButton(
+            onPressed: () {
+              authCubit.signOutUser().then((value) {
+                context.go('/');
+              });
+            },
+            icon: Icons.logout_rounded,
+          ),
         ],
       ),
       body: PageView(
@@ -74,11 +79,17 @@ class _HomeScreenState extends State<_HomeScreen> {
         selectedItemColor: colors.primary,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.store_rounded), label: 'Tienda'),
+            icon: Icon(Icons.store_rounded),
+            label: 'Tienda',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.storage_rounded), label: 'Inventario'),
+            icon: Icon(Icons.storage_rounded),
+            label: 'Inventario',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people_rounded), label: 'Jugadores'),
+            icon: Icon(Icons.people_rounded),
+            label: 'Jugadores',
+          ),
         ],
         onTap: (value) => _pageController.jumpToPage(value),
       ),
