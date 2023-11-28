@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hero_cards/presentation/blocs.dart';
 import 'package:hero_cards/presentation/widgets.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class InventoryGridView extends StatefulWidget {
   const InventoryGridView({super.key});
@@ -15,7 +14,6 @@ class InventoryGridView extends StatefulWidget {
 class _InventoryGridViewState extends State<InventoryGridView> {
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
     final heroes = context.watch<AuthCubit>().state.heroesMinimal;
 
     return (!context.watch<AuthCubit>().state.isLoading)
@@ -53,13 +51,6 @@ class _InventoryGridViewState extends State<InventoryGridView> {
                   style: TextStyle(fontSize: 22),
                 ),
               )
-        : Scaffold(
-            body: Center(
-              child: LoadingAnimationWidget.fourRotatingDots(
-                color: colors.primary,
-                size: 100,
-              ),
-            ),
-          );
+        : const CustomLoadingWidget();
   }
 }
