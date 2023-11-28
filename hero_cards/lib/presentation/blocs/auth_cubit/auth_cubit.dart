@@ -206,4 +206,26 @@ class AuthCubit extends Cubit<AuthState> {
       ));
     }
   }
+
+  Future<void> addCard({required int id}) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final user = FirebaseAuth.instance.currentUser!;
+      FirestoreService().addUserCard(
+        'users',
+        user.email!,
+        id,
+      );
+      emit(
+        state.copyWith(
+          isLoading: false,
+        ),
+      );
+    } catch (e) {
+      emit(state.copyWith(
+        error: true,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
 }
