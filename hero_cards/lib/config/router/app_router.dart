@@ -38,5 +38,9 @@ final appRouter = GoRouter(
       path: '/balance_store',
       builder: (context, state) => const BalanceStoreScreen(),
     ),
+    GoRoute(
+      path: '/random_card',
+      builder: (context, state) => const BigHeroCardScreen(),
+    ),
   ],
 );
