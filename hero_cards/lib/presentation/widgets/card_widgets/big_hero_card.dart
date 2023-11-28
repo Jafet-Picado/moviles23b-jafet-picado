@@ -3,8 +3,9 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hero_cards/presentation/blocs.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:hero_cards/presentation/widgets.dart';
 
 class BigHeroCard extends StatefulWidget {
   const BigHeroCard({super.key});
@@ -42,24 +43,79 @@ class _BigHeroCardState extends State<BigHeroCard> {
   }
 
   void _flip() {
-    if (isBack) {
-      setState(() {
-        angle = (angle + pi) % (2 * pi);
-        _audioPlayer.pause();
-        _tapPlayer
-            .play(_tapAudio, mode: PlayerMode.mediaPlayer)
-            .then((value) => Future.delayed(const Duration(seconds: 5), () {
-                  _tapPlayer.pause();
-                  _audioPlayer.resume();
-                }));
-      });
+    if (context.read<AuthCubit>().state.balance >= 1000) {
+      if (isBack) {
+        setState(() {
+          angle = (angle + pi) % (2 * pi);
+          _audioPlayer.pause();
+          _tapPlayer.play(_tapAudio, mode: PlayerMode.mediaPlayer).then(
+                (value) => Future.delayed(
+                  const Duration(seconds: 5),
+                  () {
+                    _tapPlayer.pause();
+                    _audioPlayer.resume();
+                  },
+                ),
+              );
+        });
+        context.read<AuthCubit>().addCard(
+              id: context.read<HeroCubit>().state.heroMinimal!.id,
+            );
+        context.read<AuthCubit>().updateBalance(amount: -1000);
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            elevation: 5,
+            child: SizedBox(
+              height: 200,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  const Icon(
+                    Icons.error_rounded,
+                    color: Colors.red,
+                    size: 50,
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Fondos insuficientes',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).pop(this);
+                      _audioPlayer.pause();
+                      context.push('/balance_store');
+                    },
+                    child: Text(
+                      '¿Desea comprar más HeroCoins?',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final hero = context.read<HeroCubit>().state.heroMinimal;
-    final colors = Theme.of(context).colorScheme;
 
     const colorizeColors = [
       Colors.white,
@@ -100,6 +156,30 @@ class _BigHeroCardState extends State<BigHeroCard> {
                               image: const DecorationImage(
                                 image: AssetImage('assets/images/back.png'),
                                 fit: BoxFit.fill,
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.only(top: 100),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Toque para comprar.',
+                                    style: TextStyle(
+                                      fontFamily: 'Horizon',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    'Coste 1000 HeroCoins',
+                                    style: TextStyle(
+                                      fontFamily: 'Horizon',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           )
@@ -176,11 +256,6 @@ class _BigHeroCardState extends State<BigHeroCard> {
               },
             ),
           )
-        : Center(
-            child: LoadingAnimationWidget.fourRotatingDots(
-              color: colors.primary,
-              size: 100,
-            ),
-          );
+        : const CustomLoadingWidget();
   }
 }
