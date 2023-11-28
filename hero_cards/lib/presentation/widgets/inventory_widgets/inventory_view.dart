@@ -35,7 +35,7 @@ class _InventoryViewState extends State<InventoryView> {
             elevation: 5,
             onPressed: () => _loadCards(),
             backgroundColor: colors.primaryContainer,
-            foregroundColor: colors.onPrimaryContainer,
+            foregroundColor: colors.onBackground,
             heroTag: null,
             child: const Icon(Icons.sync_rounded),
           ),
@@ -48,7 +48,7 @@ class _InventoryViewState extends State<InventoryView> {
               });
             },
             backgroundColor: colors.primaryContainer,
-            foregroundColor: colors.onPrimaryContainer,
+            foregroundColor: colors.onBackground,
             heroTag: null,
             child: (showGrid)
                 ? const Icon(Icons.list_alt_rounded, size: 40)
