@@ -137,4 +137,26 @@ class HeroCubit extends Cubit<HeroState> {
       ));
     }
   }
+
+  Future<void> getRandomHeroesMinimal({int quantity = 8}) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      HeroRepositoryImpl repo =
+          HeroRepositoryImpl(datasource: SuperheroDatasource());
+      List<HeroInfoMinimal> heroesList = [];
+      for (int index = 0; index < quantity; index++) {
+        await repo.getRandomHero().then((value) => heroesList.add(value));
+      }
+
+      emit(state.copyWith(
+        isLoading: false,
+        heroesMinimal: heroesList,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: true,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
 }
