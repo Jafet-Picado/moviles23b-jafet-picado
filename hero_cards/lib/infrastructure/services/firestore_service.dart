@@ -19,10 +19,11 @@ class FirestoreService {
         .update({field: data});
   }
 
-  void addUserCard(String collectionPath, String email, int id) {
-    DocumentReference reference =
-        FirebaseFirestore.instance.collection(collectionPath).doc(email);
-    reference.update({
+  Future<void> addUserCard(String collectionPath, String email, int id) async {
+    await FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(email)
+        .update({
       'cards': FieldValue.arrayUnion([id])
     });
   }
