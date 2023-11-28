@@ -18,6 +18,7 @@ void main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => AuthCubit()),
+      BlocProvider(create: (context) => HeroCubit()),
     ],
     child: const MainApp(),
   ));
