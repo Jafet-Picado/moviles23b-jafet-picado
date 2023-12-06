@@ -64,7 +64,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         children: const [
           CardsStoreView(),
           InventoryView(),
-          Text('Jugadores'),
+          UsersListView(),
         ],
         onPageChanged: (value) {
           setState(() {
