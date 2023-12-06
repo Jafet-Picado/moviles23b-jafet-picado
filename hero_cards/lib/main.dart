@@ -19,6 +19,7 @@ void main() async {
     providers: [
       BlocProvider(create: (context) => AuthCubit()),
       BlocProvider(create: (context) => HeroCubit()),
+      BlocProvider(create: (context) => UserCubit()),
     ],
     child: const MainApp(),
   ));
