@@ -37,8 +37,10 @@ class FirestoreService {
         .get();
   }
 
-  Future<QuerySnapshot> getUsers(String collectionPath) async {
-    return await FirebaseFirestore.instance.collection(collectionPath).get();
+  Future<QuerySnapshot> getUsers() async {
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    return await usersCollection.get();
   }
 
   Future<void> updateUserBalance(
