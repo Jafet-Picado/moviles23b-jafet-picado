@@ -79,7 +79,7 @@ class CustomGridCard extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 22,
-              backgroundColor: colors.primaryContainer,
+              backgroundColor: colors.secondaryContainer,
               child: IconButton(
                 onPressed: onPressedView,
                 icon: Icon(
