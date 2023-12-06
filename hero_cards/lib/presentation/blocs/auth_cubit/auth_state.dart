@@ -14,6 +14,7 @@ class AuthState extends Equatable {
   final List<HeroInfo> heroes;
   final List<HeroInfoMinimal> heroesMinimal;
   final int balance;
+  final bool isOnline;
 
   const AuthState({
     this.isAuth = false,
@@ -28,6 +29,7 @@ class AuthState extends Equatable {
     this.heroes = const [],
     this.heroesMinimal = const [],
     this.balance = -1,
+    this.isOnline = false,
   });
 
   AuthState copyWith({
@@ -43,6 +45,7 @@ class AuthState extends Equatable {
     List<HeroInfo>? heroes,
     List<HeroInfoMinimal>? heroesMinimal,
     int? balance,
+    bool? isOnline,
   }) =>
       AuthState(
         isAuth: isAuth ?? this.isAuth,
@@ -57,6 +60,7 @@ class AuthState extends Equatable {
         heroes: heroes ?? this.heroes,
         heroesMinimal: heroesMinimal ?? this.heroesMinimal,
         balance: balance ?? this.balance,
+        isOnline: isOnline ?? this.isOnline,
       );
 
   @override
@@ -73,5 +77,6 @@ class AuthState extends Equatable {
         heroes,
         heroesMinimal,
         balance,
+        isOnline,
       ];
 }
