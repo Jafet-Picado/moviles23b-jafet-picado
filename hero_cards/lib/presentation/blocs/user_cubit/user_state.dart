@@ -1,7 +1,7 @@
 part of 'user_cubit.dart';
 
 class UserState extends Equatable {
-  final List<Object> users;
+  final List<Map<String, dynamic>> users;
   final bool isLoading;
 
   const UserState({
@@ -10,7 +10,7 @@ class UserState extends Equatable {
   });
 
   UserState copyWith({
-    List<Object>? users,
+    List<Map<String, dynamic>>? users,
     bool? isLoading,
   }) =>
       UserState(
