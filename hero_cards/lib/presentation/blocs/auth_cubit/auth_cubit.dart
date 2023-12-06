@@ -29,6 +29,8 @@ class AuthCubit extends Cubit<AuthState> {
           isAuth: true,
           isLoading: false,
           email: user.email,
+          username: userData.data()!['username'],
+          bio: userData.data()!['bio'],
           balance: userData.data()!['balance'],
         ),
       );
