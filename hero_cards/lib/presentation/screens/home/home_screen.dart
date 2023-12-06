@@ -41,8 +41,14 @@ class _HomeScreenState extends State<_HomeScreen> {
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hero Cards'),
         actions: [
+          CustomElevatedButton(
+            onPressed: () {
+              context.push('/profile_edit');
+            },
+            icon: Icons.person_rounded,
+          ),
+          const SizedBox(width: 10),
           CustomPillButton(
             balance: context.watch<AuthCubit>().state.balance.toString(),
             onTap: () {
