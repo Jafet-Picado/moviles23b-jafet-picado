@@ -25,14 +25,28 @@ class _InventoryListViewState extends State<InventoryListView> {
                       scrollDirection: Axis.vertical,
                       itemCount: heroes.length,
                       itemBuilder: (context, index) {
-                        return CustomListCard(
-                          title: heroes[index].name,
-                          elevation: 2,
-                          onPressedView: () {
-                            context.push('/hero/${heroes[index].id}');
-                          },
-                          image: heroes[index].image.smallUrl,
-                        );
+                        return ((index + 1) != heroes.length)
+                            ? CustomListCard(
+                                title: heroes[index].name,
+                                elevation: 2,
+                                onPressedView: () {
+                                  context.push('/hero/${heroes[index].id}');
+                                },
+                                image: heroes[index].image.smallUrl,
+                              )
+                            : Column(
+                                children: [
+                                  CustomListCard(
+                                    title: heroes[index].name,
+                                    elevation: 2,
+                                    onPressedView: () {
+                                      context.push('/hero/${heroes[index].id}');
+                                    },
+                                    image: heroes[index].image.smallUrl,
+                                  ),
+                                  const SizedBox(height: 150),
+                                ],
+                              );
                       },
                     ),
                   ),
