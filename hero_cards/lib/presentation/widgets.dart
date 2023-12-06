@@ -12,3 +12,5 @@ export './widgets/inventory_widgets/inventory_list_view.dart';
 export './widgets/inventory_widgets/inventory_view.dart';
 export './widgets/store_widgets.dart/balance_store_card.dart';
 export './widgets/store_widgets.dart/cards_store_view.dart';
+export './widgets/users_widgets/users_list_view.dart';
+export './widgets/custom_widgets/custom_user_card.dart';
