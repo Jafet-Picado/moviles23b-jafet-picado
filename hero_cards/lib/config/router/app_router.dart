@@ -42,5 +42,9 @@ final appRouter = GoRouter(
       path: '/random_card',
       builder: (context, state) => const BigHeroCardScreen(),
     ),
+    GoRoute(
+      path: '/profile_edit',
+      builder: (context, state) => const ProfileEditScreen(),
+    ),
   ],
 );
