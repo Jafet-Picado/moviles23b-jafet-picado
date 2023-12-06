@@ -76,7 +76,7 @@ class CustomListCard extends StatelessWidget {
             const Expanded(child: SizedBox()),
             CircleAvatar(
               radius: 20,
-              backgroundColor: colors.primaryContainer,
+              backgroundColor: colors.secondaryContainer,
               child: IconButton(
                 onPressed: onPressedView,
                 icon: Icon(
