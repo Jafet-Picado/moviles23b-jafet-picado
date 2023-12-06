@@ -22,6 +22,8 @@ class AuthCubit extends Cubit<AuthState> {
       final user = FirebaseAuth.instance.currentUser!;
       final userData =
           await FirestoreService().getUserData('users', user.email!);
+      await FirestoreService()
+          .updateUserData('users', user.email!, 'isOnline', true);
       emit(
         state.copyWith(
           isAuth: true,
@@ -109,6 +111,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signOutUser() async {
+    await FirestoreService().updateUserData(
+        'users', FirebaseAuth.instance.currentUser!.email!, 'isOnline', false);
     await FirebaseAuth.instance.signOut();
     FirestoreService().clear();
     emit(const AuthState());
