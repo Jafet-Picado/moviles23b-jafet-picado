@@ -8,11 +8,12 @@ class FirestoreService {
       'bio': bio,
       'cards': [],
       'balance': 1000,
+      'isOnline': true,
     });
   }
 
   Future<void> updateUserData(
-      String collectionPath, String email, String field, String data) async {
+      String collectionPath, String email, String field, dynamic data) async {
     await FirebaseFirestore.instance
         .collection(collectionPath)
         .doc(email)
@@ -34,6 +35,10 @@ class FirestoreService {
         .collection(collectionPath)
         .doc(email)
         .get();
+  }
+
+  Future<QuerySnapshot> getUsers(String collectionPath) async {
+    return await FirebaseFirestore.instance.collection(collectionPath).get();
   }
 
   Future<void> updateUserBalance(
