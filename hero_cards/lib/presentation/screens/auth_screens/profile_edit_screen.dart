@@ -14,6 +14,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final _usernameController = TextEditingController();
   final _bioController = TextEditingController();
 
+  //Método encargado de mostrar un popup con un mensaje informativo y de guardar
+  //los cambios realizados en la información del usuario
   void saveChanges(AuthCubit authCubit) {
     showDialog(
       context: context,
