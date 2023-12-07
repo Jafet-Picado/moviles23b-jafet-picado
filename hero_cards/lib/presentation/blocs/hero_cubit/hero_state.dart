@@ -4,8 +4,7 @@ class HeroState extends Equatable {
   final bool isLoading;
   final bool error;
   final String errorMessage;
-  final List<HeroInfo> heroes;
-  final HeroInfo? hero;
+
   final HeroInfoMinimal? heroMinimal;
   final HeroInfoDetailed? heroDetailed;
   final List<HeroInfoMinimal> heroesMinimal;
@@ -15,8 +14,6 @@ class HeroState extends Equatable {
     this.isLoading = false,
     this.error = false,
     this.errorMessage = '',
-    this.heroes = const [],
-    this.hero,
     this.heroMinimal,
     this.heroDetailed,
     this.heroesMinimal = const [],
@@ -27,8 +24,6 @@ class HeroState extends Equatable {
     bool? isLoading,
     bool? error,
     String? errorMessage,
-    List<HeroInfo>? heroes,
-    HeroInfo? hero,
     HeroInfoMinimal? heroMinimal,
     HeroInfoDetailed? heroDetailed,
     List<HeroInfoMinimal>? heroesMinimal,
@@ -38,8 +33,6 @@ class HeroState extends Equatable {
         isLoading: isLoading ?? this.isLoading,
         error: error ?? this.error,
         errorMessage: errorMessage ?? this.errorMessage,
-        heroes: heroes ?? this.heroes,
-        hero: hero ?? this.hero,
         heroMinimal: heroMinimal ?? this.heroMinimal,
         heroDetailed: heroDetailed ?? this.heroDetailed,
         heroesMinimal: heroesMinimal ?? this.heroesMinimal,
@@ -51,7 +44,6 @@ class HeroState extends Equatable {
         isLoading,
         error,
         errorMessage,
-        heroes,
         heroesMinimal,
         heroesDetailed,
       ];
