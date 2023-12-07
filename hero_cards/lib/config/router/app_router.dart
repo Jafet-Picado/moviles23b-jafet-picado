@@ -3,9 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:hero_cards/presentation/blocs.dart';
 import 'package:hero_cards/presentation/screens.dart';
 
+// Configuración del router de la aplicación
 final appRouter = GoRouter(
   initialLocation: '/',
   redirect: (context, state) {
+    // Redirección basada en el estado de autenticación
     final isAuth = context.read<AuthCubit>().state.isAuth;
     final isCreatingAccount = context.read<AuthCubit>().state.isCreatingAccount;
     if (!isAuth && !isCreatingAccount) {
