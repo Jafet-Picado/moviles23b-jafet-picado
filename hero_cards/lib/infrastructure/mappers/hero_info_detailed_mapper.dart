@@ -1,6 +1,10 @@
 import 'package:hero_cards/domain/entities/hero_info_detailed.dart';
 
+//Clase encargada de mapear la respuesta del API (JSON) a la clase HeroInfoDetailed
 class HeroInfoDetailedMapper {
+  //Recibe un JSON con la información detallada de un héroe y convierte esa
+  //información en una instancia de la clase HeroInfoDetailed al iterar por cada
+  //campo y asignando los valores correspondientes.
   HeroInfoDetailed superheroToEntityJSON(Map<String, dynamic> json) =>
       HeroInfoDetailed(
         aliases: json['aliases'] ?? '',
