@@ -17,6 +17,7 @@ class CardsStoreView extends StatefulWidget {
 }
 
 class _CardsStoreViewState extends State<CardsStoreView> {
+  //Map con los diferentes precios posibles para una carta de la tienda
   static final Map<String, int> _prices = {
     '1': 1000,
     '2': 2000,
@@ -31,6 +32,8 @@ class _CardsStoreViewState extends State<CardsStoreView> {
   final CarouselController _controllerTrending = CarouselController();
   final CarouselController _controllerRecent = CarouselController();
 
+  //Método encargado de añadir la carta a la lista del usuario si tiene los fondos
+  //suficientes y de mostrar un mensaje informativo al finalizar o al dar error
   void _buyCard(AuthCubit authCubit, ColorScheme colors, int price, int id) {
     if ((authCubit.state.balance - price) < 0) {
       _showDialog(
@@ -57,6 +60,7 @@ class _CardsStoreViewState extends State<CardsStoreView> {
     }
   }
 
+  //Método encargado de retornar una lista de Cards para el carrusel de cartas
   List<Widget> _getHeroCards(
       HeroCubit heroCubit, AuthCubit authCubit, ColorScheme colors) {
     if (!_cardsLoaded) {
@@ -77,6 +81,7 @@ class _CardsStoreViewState extends State<CardsStoreView> {
     return _heroCards;
   }
 
+  //Método encargado de mostrar un popup personalizado con un mensaje informativo
   void _showDialog({
     required BuildContext context,
     required String message,
