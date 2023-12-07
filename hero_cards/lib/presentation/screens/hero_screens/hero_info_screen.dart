@@ -34,7 +34,9 @@ class _HeroInfoScreen extends StatefulWidget {
 }
 
 class _HeroInfoScreenState extends State<_HeroInfoScreen> {
-  List<Widget> _buildColumn(List<EntityFirstAppearedInIssue> list) {
+  //Método utilizado para construir una lista de filas con los valores
+  //de la lista
+  List<Widget> _buildRows(List<EntityFirstAppearedInIssue> list) {
     return list.map((friend) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -191,7 +193,7 @@ class _HeroInfoScreenState extends State<_HeroInfoScreen> {
                         )
                       : Column(
                           children: [
-                            ..._buildColumn(hero.characterFriends),
+                            ..._buildRows(hero.characterFriends),
                           ],
                         ),
                   const SizedBox(height: 10),
@@ -212,7 +214,7 @@ class _HeroInfoScreenState extends State<_HeroInfoScreen> {
                         )
                       : Column(
                           children: [
-                            ..._buildColumn(hero.characterEnemies),
+                            ..._buildRows(hero.characterEnemies),
                           ],
                         ),
                   const SizedBox(height: 10),
@@ -233,7 +235,7 @@ class _HeroInfoScreenState extends State<_HeroInfoScreen> {
                         )
                       : Column(
                           children: [
-                            ..._buildColumn(hero.powers),
+                            ..._buildRows(hero.powers),
                           ],
                         ),
                   const SizedBox(height: 10),
