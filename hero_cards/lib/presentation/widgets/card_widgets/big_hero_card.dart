@@ -18,6 +18,8 @@ class _BigHeroCardState extends State<BigHeroCard> {
   bool isBack = true;
   double angle = 0;
 
+  //Instancias encargadas de ejecutar el sonido determinado la iniciar este
+  //widget
   final AudioPlayer _audioPlayer = AudioPlayer()
     ..setReleaseMode(ReleaseMode.loop);
   final AudioPlayer _tapPlayer = AudioPlayer();
@@ -31,6 +33,7 @@ class _BigHeroCardState extends State<BigHeroCard> {
     _initPlayer();
   }
 
+  //Inicia la música predeterminada
   void _initPlayer() async {
     await _audioPlayer.play(_audio, mode: PlayerMode.mediaPlayer);
   }
@@ -42,6 +45,9 @@ class _BigHeroCardState extends State<BigHeroCard> {
     super.dispose();
   }
 
+  //Método encargado de determinar si un usuario cuenta con la cantidad necesaria
+  //de monedas para comprar una carta aleatorio, de ser así actualiza el estado
+  //de forma que la carta se gire mostrando su información
   void _flip() {
     if (context.read<AuthCubit>().state.balance >= 1000) {
       if (isBack) {
