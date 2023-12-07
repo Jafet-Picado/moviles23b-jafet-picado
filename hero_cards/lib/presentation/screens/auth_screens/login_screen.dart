@@ -35,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }));
   }
 
+  //Método llamado para iniciar sesión usando el método de correo y contraseña
   void signIn(BuildContext context, AuthCubit authCubit) {
     authCubit
         .signInUser(
@@ -63,6 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  //Método llamado para iniciar sesión por medio de los datos biométricos, primero
+  //solicita la autenticación por medio de los datos biométricos para luego tomar
+  //datos almacenados de manera local con el correo y contraseña del usuario
   void _authenticateUsingFingerprint(
       BuildContext context, AuthCubit authCubit) {
     try {
