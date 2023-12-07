@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Tema personalizado de la aplicación
 class AppTheme {
   ThemeData getAppTheme() {
     return ThemeData(
