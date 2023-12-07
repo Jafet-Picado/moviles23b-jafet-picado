@@ -1,3 +1,5 @@
+//Clase encargada de modelar la información mínica de un héroe,
+//Cada instancia contiene propiedades básicas de un héroe
 class HeroInfoMinimal {
   int id;
   EntityImage image;
