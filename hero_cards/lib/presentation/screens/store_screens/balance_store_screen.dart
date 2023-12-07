@@ -6,6 +6,7 @@ import 'package:hero_cards/presentation/widgets.dart';
 class BalanceStoreScreen extends StatelessWidget {
   const BalanceStoreScreen({super.key});
 
+  //Muestra un popup personalizado con un mensaje informativo
   void _showDialog(
       ColorScheme colors, BuildContext context, String message, IconData icon) {
     showDialog(
@@ -30,6 +31,8 @@ class BalanceStoreScreen extends StatelessWidget {
     );
   }
 
+  //Actualiza el monedero del usuario y actualiza el estado para mostrar los
+  //cambios realizados
   void _buyCoins(BuildContext context, AuthCubit authCubit, ColorScheme colors,
       int amount) {
     if ((authCubit.state.balance + amount) > 100000) {
