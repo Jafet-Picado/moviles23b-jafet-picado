@@ -11,6 +11,8 @@ class RegisterScreen extends StatelessWidget {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  //Método llamado para registrar al usuario con el correo eléctronico y contraseña
+  //brindados para posteriormente enviarlo a la pantalla inicial de la aplicación
   void signUp(BuildContext context, AuthCubit authCubit) {
     if (_passwordController.text == _confirmPasswordController.text) {
       authCubit
