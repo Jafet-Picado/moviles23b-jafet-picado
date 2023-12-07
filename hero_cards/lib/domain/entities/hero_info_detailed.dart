@@ -1,3 +1,6 @@
+//Clase encargada de modelar la información detallada de un héroe,
+//Cada instancia contiene propiedades que describen caracteristicas especificas
+//de un héroe.
 class HeroInfoDetailed {
   String aliases;
   dynamic birth;
@@ -36,6 +39,7 @@ class HeroInfoDetailed {
   });
 }
 
+//Una clase que representa un par de valores, un identificador único y un nombre
 class EntityFirstAppearedInIssue {
   int id;
   String? name;
@@ -46,6 +50,7 @@ class EntityFirstAppearedInIssue {
   });
 }
 
+//Una clase para albergar todas las diferentes URLs de las imagenes del héroe.
 class EntityImage {
   String iconUrl;
   String mediumUrl;
