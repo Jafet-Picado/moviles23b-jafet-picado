@@ -12,12 +12,6 @@ class InventoryView extends StatefulWidget {
 
 class _InventoryViewState extends State<InventoryView> {
   bool showGrid = false;
-  String dropDownValue = 'Lista';
-
-  List<DropdownMenuEntry<bool>> filterTypes = [
-    const DropdownMenuEntry(value: false, label: 'Lista'),
-    const DropdownMenuEntry(value: true, label: 'Cuadricula'),
-  ];
 
   void _loadCards() {
     context.read<AuthCubit>().getHeroesMinimalByList();
