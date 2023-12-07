@@ -3,31 +3,15 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hero_cards/domain/datasources/hero_datasource.dart';
-import 'package:hero_cards/domain/entities/hero_info.dart';
 import 'package:hero_cards/domain/entities/hero_info_detailed.dart';
 import 'package:hero_cards/domain/entities/hero_info_minimal.dart';
 import 'package:hero_cards/infrastructure/mappers/hero_info_detailed_mapper.dart';
-import 'package:hero_cards/infrastructure/mappers/hero_info_mapper.dart';
 import 'package:hero_cards/infrastructure/mappers/hero_info_minimal_mapper.dart';
-import 'package:hero_cards/infrastructure/models/superhero_response.dart';
 
+//Implementación de la clase abstracta de la fuente de datos de los héroes.
 class SuperheroDatasource extends HeroDatasource {
-  @override
-  Future<HeroInfo> getHero({required int id}) async {
-    final dio = Dio(BaseOptions(baseUrl: 'https://superheroapi.com/api'));
-
-    final apiKey = dotenv.env['KEY'];
-
-    final response = await dio.get(
-      '/$apiKey/$id',
-    );
-
-    final heroResponse = SuperheroResponse.fromJson(response.data);
-    final HeroInfo hero = HeroInfoMapper().superheroToEntity(heroResponse);
-
-    return hero;
-  }
-
+  //Retorna la información detallada de un héroe con su ID, al realizar un
+  //llamado al API y posteriormente mapear la respuesta en la clase correspondiente.
   @override
   Future<HeroInfoDetailed> getHeroDetailed({required int id}) async {
     final dio = Dio(BaseOptions(
@@ -44,6 +28,9 @@ class SuperheroDatasource extends HeroDatasource {
     return hero;
   }
 
+  //Retorna la información mínima de un héroe aleatorio al obtener un valor
+  //entre el 0 y el máximo de información del API y esto lo logra al realizar un
+  //llamado al API y posteriormente mapear la respuesta en la clase correspondiente.
   @override
   Future<HeroInfoMinimal> getRandomHero() async {
     int offset = Random().nextInt(158505);
@@ -64,6 +51,8 @@ class SuperheroDatasource extends HeroDatasource {
     return hero;
   }
 
+  //Retorna la información mínima de un héroe con su ID, al realizar un
+  //llamado al API y posteriormente mapear la respuesta en la clase correspondiente.
   @override
   Future<HeroInfoMinimal> getHeroMinimal({required int id}) async {
     final dio = Dio(
