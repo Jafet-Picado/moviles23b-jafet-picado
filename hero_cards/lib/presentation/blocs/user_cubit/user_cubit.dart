@@ -8,6 +8,8 @@ part 'user_state.dart';
 class UserCubit extends Cubit<UserState> {
   UserCubit() : super(const UserState());
 
+  //Obtiene la lista de usuarios registrados en la aplicación y actualiza el
+  //estado para tener su información disponible.
   Future<void> getUsers() async {
     emit(state.copyWith(isLoading: true));
     final querySnapshot = await FirestoreService().getUsers();
