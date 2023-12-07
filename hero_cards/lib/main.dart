@@ -6,10 +6,19 @@ import 'package:hero_cards/config/router/app_router.dart';
 import 'package:hero_cards/config/theme/theme.dart';
 import 'package:hero_cards/firebase_options.dart';
 import 'package:hero_cards/presentation/blocs.dart';
+import 'package:hero_cards/presentation/widgets.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(
+    MaterialApp(
+      home: const CustomSplashScreen(),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme().getAppTheme(),
+    ),
+  );
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
