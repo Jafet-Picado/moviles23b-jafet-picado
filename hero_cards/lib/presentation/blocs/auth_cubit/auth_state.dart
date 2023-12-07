@@ -11,7 +11,6 @@ class AuthState extends Equatable {
   final String email;
   final String username;
   final String bio;
-  final List<HeroInfo> heroes;
   final List<HeroInfoMinimal> heroesMinimal;
   final int balance;
   final bool isOnline;
@@ -26,7 +25,6 @@ class AuthState extends Equatable {
     this.email = '',
     this.username = '',
     this.bio = '',
-    this.heroes = const [],
     this.heroesMinimal = const [],
     this.balance = -1,
     this.isOnline = false,
@@ -42,7 +40,6 @@ class AuthState extends Equatable {
     String? email,
     String? username,
     String? bio,
-    List<HeroInfo>? heroes,
     List<HeroInfoMinimal>? heroesMinimal,
     int? balance,
     bool? isOnline,
@@ -57,7 +54,6 @@ class AuthState extends Equatable {
         email: email ?? this.email,
         username: username ?? this.username,
         bio: bio ?? this.bio,
-        heroes: heroes ?? this.heroes,
         heroesMinimal: heroesMinimal ?? this.heroesMinimal,
         balance: balance ?? this.balance,
         isOnline: isOnline ?? this.isOnline,
@@ -74,7 +70,6 @@ class AuthState extends Equatable {
         email,
         username,
         bio,
-        heroes,
         heroesMinimal,
         balance,
         isOnline,
