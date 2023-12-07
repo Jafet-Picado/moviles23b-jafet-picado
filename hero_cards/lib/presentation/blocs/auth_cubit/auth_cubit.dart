@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hero_cards/domain/entities/hero_info.dart';
 import 'package:hero_cards/domain/entities/hero_info_minimal.dart';
 import 'package:hero_cards/infrastructure/datasources/superhero_datasource.dart';
 import 'package:hero_cards/infrastructure/repositories/hero_repository.dart';
@@ -12,6 +11,9 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(const AuthState());
 
+  //Método utilizado para autenticar al usuario por medio de un correo eléctronico
+  //y una contraseña, además, actualiza el estado del usuario para obtener la información
+  //del mismo y marcar al usuario con estado Online en la aplicación
   Future<void> signInUser(String email, String password) async {
     emit(state.copyWith(isLoading: true));
     try {
@@ -46,6 +48,8 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  //Registra un usuario nuevo con un correo eléctronico y una contraseña, además,
+  //crea la información básica e inicial del usuario.
   Future<void> signUpUser(String email, String password) async {
     emit(
       state.copyWith(isLoading: true),
@@ -89,6 +93,8 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  //Método encargado de actualizar la información de un campo específico de los
+  //datos del usuario.
   Future<void> updateUserData(String email, String field, String data) async {
     emit(state.copyWith(isLoading: true));
     try {
@@ -112,6 +118,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  //Cierra la sesión del usuario y actualiza su estado a Offline.
   Future<void> signOutUser() async {
     await FirestoreService().updateUserData(
         'users', FirebaseAuth.instance.currentUser!.email!, 'isOnline', false);
@@ -120,6 +127,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState());
   }
 
+  //Define si un usuario está creando una cuenta para el manejo del router
   void isCreatingAccount() {
     emit(
       state.copyWith(
@@ -130,35 +138,12 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  //Reinicia el estado
   void reset() {
     emit(const AuthState());
   }
 
-  Future<void> getUserCards() async {
-    try {
-      emit(state.copyWith(isLoading: true));
-      final user = FirebaseAuth.instance.currentUser!;
-      final userData =
-          await FirestoreService().getUserData('users', user.email!);
-      HeroRepositoryImpl repo =
-          HeroRepositoryImpl(datasource: SuperheroDatasource());
-      List<HeroInfo> heroesList = [];
-      for (int id in userData.data()!['cards']) {
-        await repo.getHero(id: id).then((value) => heroesList.add(value));
-      }
-
-      emit(state.copyWith(
-        isLoading: false,
-        heroes: heroesList,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-        error: true,
-        errorMessage: e.toString(),
-      ));
-    }
-  }
-
+  //Obtiene la información mínima de todos las cartas del usuario autenticado
   Future<void> getHeroesMinimalByList() async {
     try {
       emit(state.copyWith(isLoading: true));
@@ -186,6 +171,8 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  //Actualiza el monedero del cliente autenticado, ya sea para añadir o reducir
+  //su valor
   Future<void> updateBalance({required int amount}) async {
     try {
       emit(state.copyWith(isLoading: true));
@@ -213,6 +200,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  //Añade el ID de una carta a la lista de cartas del usuario autenticado
   Future<void> addCard({required int id}) async {
     try {
       emit(state.copyWith(isLoading: true));
